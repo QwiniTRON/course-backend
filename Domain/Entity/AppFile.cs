@@ -5,6 +5,12 @@ namespace Domain.Entity
 {
     public class AppFile: IEntity
     {
+        public AppFile(string name, string path)
+        {
+            Name = name;
+            Path = path;
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string Path { get; set; }

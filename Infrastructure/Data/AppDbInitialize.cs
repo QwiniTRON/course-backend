@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Domain.Data;
 using Domain.Entity;
 using Domain.Enums;
@@ -45,6 +46,18 @@ namespace Infrastructure.Data
                         UserRoles.Admin
                     );
                 context.Users.Add(mainAdmin);
+
+
+                List<Lesson> lessons = new List<Lesson>()
+                {
+                    new Lesson("Знакомство с библиотекой"),
+                    new Lesson("Основные понятия"),
+                    new Lesson("Что такое код"),
+                    new Lesson("Примеры кода"),
+                    new Lesson("Компанент"),
+                    new Lesson("Подходы к разработке")
+                };
+                
                 
                 context.SaveChanges();
             }

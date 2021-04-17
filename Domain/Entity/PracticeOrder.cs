@@ -24,6 +24,17 @@ namespace Domain.Entity
         
         public DateTime CreatedDate { get; set; }
         
+        
+        /* ctors */
+        public PracticeOrder(User author, User teacher, Lesson lesson, AppFile practiceContent)
+        {
+            Author = author;
+            Teacher = teacher;
+            Lesson = lesson;
+            PracticeContent = practiceContent;
+            
+            IsDone = false;
+        }
         protected PracticeOrder(){}
     }
 }

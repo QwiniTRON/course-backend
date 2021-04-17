@@ -5,6 +5,13 @@ namespace Domain.Entity
 {
     public class Message: IEntity
     {
+        public Message(string text, User author, Chat chat)
+        {
+            Text = text;
+            Author = author;
+            Chat = chat;
+        }
+
         public int Id { get; set; }
         
         public string Text { get; set; }

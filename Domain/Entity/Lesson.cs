@@ -5,6 +5,11 @@ namespace Domain.Entity
 {
     public class Lesson: IEntity
     {
+        public Lesson(string name)
+        {
+            Name = name;
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
 
