@@ -11,5 +11,10 @@ namespace Domain.Entity
 
         public Lesson Lesson { get; set; }
         public int LessonId { get; set; }
+
+        protected UserProgress()
+        {
+            
+        }
     }
 }

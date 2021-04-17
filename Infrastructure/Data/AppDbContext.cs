@@ -16,12 +16,20 @@ namespace Infrastructure.Data
     {
         // entities
         public  DbSet<User> Users { get; set; }
-
+        public DbSet<AppFile> AppFiles { get; set; }
+        public DbSet<Chat> Chats { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Lesson> Lessons { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<UserProgress> Progresses { get; set; }
+        
+        
         private IUnitOfWork _currentUnitOfWork;
 
+        /* ctor */
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) {  }
-        
+        /* model creating */
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

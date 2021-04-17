@@ -22,12 +22,14 @@ namespace Domain.Entity
         public string Mail { get; set; }
         public string Nick { get; set; }
         public string Password { get; set; }
-        // add role
         public bool IsBanned { get; set; }
         public UserRoles Role { get; set; }
 
 
         public List<UserProgress> UserProgresses { get; set; }
+        public List<Comment> Comments { get; set; }
+        public List<Chat> Chats { get; set; }
+        public List<Message> Messages { get; set; }
         
         protected User() { }
     }

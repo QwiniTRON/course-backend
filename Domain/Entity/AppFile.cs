@@ -3,15 +3,15 @@ using Domain.Abstractions;
 
 namespace Domain.Entity
 {
-    public class Lesson: IEntity
+    public class AppFile: IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Path { get; set; }
 
-        public List<UserProgress> UserProgresses { get; set; }
-        public List<Comment> Comments { get; set; }
-
-        protected Lesson()
+        public List<Message> Messages { get; set; }
+        
+        protected AppFile()
         {
             
         }
