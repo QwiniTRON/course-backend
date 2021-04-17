@@ -1,4 +1,5 @@
 ﻿using course_backend.Abstractions.DI;
+using course_backend.Services;
 using Domain.Abstractions;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,7 @@ namespace course_backend.ServiceInstallers
                 .AddNewtonsoftJson()
                 .AddFluentValidation(fv => 
                     fv.RegisterValidatorsFromAssembly(typeof(IEntity).Assembly));
+            serviceCollection.AddScoped<IModelValidate, ModelValidate>();
         }
     }
 }

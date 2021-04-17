@@ -1,6 +1,7 @@
 ﻿using System;
 using Domain.Data;
 using Domain.Entity;
+using Domain.Enums;
 using Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,10 +37,13 @@ namespace Infrastructure.Data
             try
             {
                 /* init project data */
-
-                User mainAdmin = new User(adminConfig.Mail, 
-                    adminConfig.Nick, 
-                    adminConfig.Password);
+                string passwordHash = BCrypt.Net.BCrypt.HashPassword(adminConfig.Password);
+                User mainAdmin = new User(
+                        adminConfig.Mail, 
+                        adminConfig.Nick, 
+                        passwordHash, 
+                        UserRoles.Admin
+                    );
                 context.Users.Add(mainAdmin);
                 
                 context.SaveChanges();

@@ -27,7 +27,7 @@ namespace course_backend
                 if (context is null) throw new NullReferenceException("context was null"); 
                 
                 /* if there is no one in the Db */
-                if (!context.Users.Any())
+                if (context.Users.Any() == false)
                 {
                     AppDbInitialize.Initialize(app.Services);
                 }

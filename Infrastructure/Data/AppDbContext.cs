@@ -4,6 +4,7 @@ using Domain.Data;
 using Domain.Entity;
 using Infrastructure.Abstractions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +29,7 @@ namespace Infrastructure.Data
             builder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         }
 
+        /* unit of work */
         public IUnitOfWork CreateUnitOfWork()
         {
             if (_currentUnitOfWork != null)

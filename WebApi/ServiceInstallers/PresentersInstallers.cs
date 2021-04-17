@@ -14,13 +14,13 @@ namespace course_backend.ServiceInstallers
         public void Inject(IServiceCollection serviceCollection, IConfiguration configuration, IHostEnvironment env)
         {
             typeof(IOutput).Assembly.ExportedTypes
-                .Where(x => typeof(IOutput).IsAssignableTo(x) && !x.IsInterface && !x.IsAbstract)
+                .Where(x => typeof(IOutput).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)
                 .ToList()
                 .ForEach(output =>
                 {
                     var presenterType = typeof(IPresenter<>).MakeGenericType(output);
 
-                    var presenter = typeof(IPresenter<>).Assembly.GetTypes()
+                    var presenter = typeof(IPresenter<>).Assembly.ExportedTypes
                         .FirstOrDefault(x => presenterType.IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract);
 
                     if (presenter is null)

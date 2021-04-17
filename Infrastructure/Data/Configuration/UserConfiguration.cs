@@ -9,6 +9,7 @@ namespace Infrastructure.Data.Configuration
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.HasKey(x => x.Id);
+            builder.HasIndex(x => x.Mail).IsUnique();
         }
     }
 }

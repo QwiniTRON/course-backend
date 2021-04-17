@@ -24,6 +24,12 @@ namespace course_backend.Implementations
         private readonly IMediator _mediator;
 
 
+        public UseCaseDispatcher(IServiceProvider serviceProvider, IMediator mediator)
+        {
+            _serviceProvider = serviceProvider;
+            _mediator = mediator;
+        }
+
         public async Task<IActionResult> DispatchAsync<TRequest>(TRequest request) where TRequest : IUseCaseInput
         {
             using var services = _serviceProvider.CreateScope();

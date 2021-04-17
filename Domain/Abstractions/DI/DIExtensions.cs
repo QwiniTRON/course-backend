@@ -15,8 +15,8 @@ namespace course_backend.Abstractions.DI
             IConfiguration configuration,
             IHostEnvironment env)
         {
-            Type[] targetAssamblyTypes = typeFromTargetAssembly.Assembly.GetTypes();
-            targetAssamblyTypes.Where((type) =>
+            var targetAssemblyTypes = typeFromTargetAssembly.Assembly.ExportedTypes;
+            targetAssemblyTypes.Where((type) =>
                     type.IsAssignableTo(typeof(IInjectable)) && !type.IsInterface && !type.IsAbstract)
                     .Select(Activator.CreateInstance)
                     .Cast<IInjectable>()
