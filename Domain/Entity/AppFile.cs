@@ -10,6 +10,7 @@ namespace Domain.Entity
         public string Path { get; set; }
 
         public List<Message> Messages { get; set; }
+        public List<PracticeOrder> PracticeOrders { get; set; }
         
         protected AppFile()
         {

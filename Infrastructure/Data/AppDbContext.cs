@@ -22,6 +22,7 @@ namespace Infrastructure.Data
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<UserProgress> Progresses { get; set; }
+        public DbSet<PracticeOrder> PracticeOrders { get; set; }
         
         
         private IUnitOfWork _currentUnitOfWork;

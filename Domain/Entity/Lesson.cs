@@ -10,6 +10,7 @@ namespace Domain.Entity
 
         public List<UserProgress> UserProgresses { get; set; }
         public List<Comment> Comments { get; set; }
+        public List<PracticeOrder> PracticeOrders { get; set; }
 
         protected Lesson()
         {

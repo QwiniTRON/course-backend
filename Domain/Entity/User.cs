@@ -30,6 +30,8 @@ namespace Domain.Entity
         public List<Comment> Comments { get; set; }
         public List<Chat> Chats { get; set; }
         public List<Message> Messages { get; set; }
+        public List<PracticeOrder> PracticeOrders { get; set; }
+        public List<PracticeOrder> PracticeOrdersChecks { get; set; }
         
         protected User() { }
     }
