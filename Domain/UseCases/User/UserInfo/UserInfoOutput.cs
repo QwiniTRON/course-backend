@@ -12,13 +12,4 @@ namespace Domain.UseCases.User.UserInfo
         public string Mail { get; set; }
         public bool IsBanned { get; set; }
     }
-
-    public class SomeMapper : Profile
-    {
-        public SomeMapper()
-        {
-            CreateMap<Entity.User, UserInfoOutput>();
-
-        }
-    }
 }

@@ -5,6 +5,8 @@ using Domain.Enums;
 using Domain.UseCases.User.Bann;
 using Domain.UseCases.User.ChangeNick;
 using Domain.UseCases.User.ChangeRole;
+using Domain.UseCases.User.GetUsers;
+using Domain.UseCases.User.UserInfo;
 using Infrastructure.Data;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -26,6 +28,8 @@ namespace course_backend.Controllers
             _mediator = mediator;
         }
 
+        /* ban user */
+        [HttpPut("ban")]
         [Authorize]
         [AuthorizeByRole(UserRoles.Admin)]
         public async Task<IActionResult> BannUser([FromBody] BannInput request)
@@ -33,6 +37,8 @@ namespace course_backend.Controllers
             return await _dispatcher.DispatchAsync(request);
         }
         
+        /* change role */
+        [HttpPut("role")]
         [Authorize]
         [AuthorizeByRole(UserRoles.Admin)]
         public async Task<IActionResult> ChangeRole([FromBody] ChangeRoleInput request)
@@ -40,10 +46,27 @@ namespace course_backend.Controllers
             return await _dispatcher.DispatchAsync(request);
         }
         
+        /* change nick */
+        [HttpPut("nick")]
         [Authorize]
         public async Task<IActionResult> ChangeNick([FromBody] ChangeNickInput request)
         {
             if (HttpContext.User.Identity != null) request.CurrentUserMail = HttpContext.User.Identity.Name;
+            return await _dispatcher.DispatchAsync(request);
+        }
+        
+        /* get user info */
+        [HttpGet("{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetInfo([FromRoute]int id)
+        {
+            return await _dispatcher.DispatchAsync(new UserInfoInput() {UserId = id});
+        }
+        
+        /* get users */
+        [HttpGet, Authorize]
+        public async Task<IActionResult> GetUsers([FromQuery]GetUsersInput request)
+        {
             return await _dispatcher.DispatchAsync(request);
         }
     }

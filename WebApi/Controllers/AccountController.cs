@@ -135,6 +135,7 @@ namespace course_backend.Controllers
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, user.Mail),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.ToString()),
+                new Claim(AppClaim.UserIdClaimName, user.Id.ToString()),
             };
 
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(
