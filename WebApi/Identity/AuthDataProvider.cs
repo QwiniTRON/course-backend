@@ -7,6 +7,7 @@ using Domain.Abstractions.Services;
 using Domain.Entity;
 using Infrastructure.Data;
 using Infrastructure.Data.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace course_backend.Identity
@@ -16,9 +17,9 @@ namespace course_backend.Identity
         private AuthOptions _authOptions;
         private AppDbContext _context;
 
-        public AuthDataProvider(AuthOptions authOptions, AppDbContext context)
+        public AuthDataProvider(IOptions<AuthOptions> authOptions, AppDbContext context)
         {
-            _authOptions = authOptions;
+            _authOptions = authOptions.Value;
             _context = context;
         }
 

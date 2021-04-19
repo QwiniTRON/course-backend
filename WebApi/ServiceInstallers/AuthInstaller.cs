@@ -1,12 +1,14 @@
 ﻿using course_backend.Abstractions.DI;
 using course_backend.Identity;
 using Domain.Abstractions.Services;
+using Domain.Data;
 using Domain.Entity;
 using Infrastructure.Data;
 using Infrastructure.Data.Configuration;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,10 +19,7 @@ namespace course_backend.ServiceInstallers
     public class AuthInstaller: IInjectable
     {
         public void Inject(IServiceCollection serviceCollection, IConfiguration configuration, IHostEnvironment env)
-        {
-            serviceCollection.Configure<AuthOptions>(configuration.GetSection("Auth"));
-
-
+        {         
             AuthOptions authConfig = configuration.GetSection("Auth").Get<AuthOptions>();
 
             serviceCollection.AddScoped<IAuthDataProvider, AuthDataProvider>();

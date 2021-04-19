@@ -23,7 +23,7 @@ namespace Infrastructure.Data.Configuration
                 .HasForeignKey(x => x.ContentId)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            builder.Property(x => x.CreatedTime).HasDefaultValueSql("GETDATE()");
+            builder.Property(x => x.CreatedTime).HasDefaultValueSql("NOW()");
         }
     }
 }

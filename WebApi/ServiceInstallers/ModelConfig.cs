@@ -1,4 +1,5 @@
 ﻿using course_backend.Abstractions.DI;
+using Infrastructure.Data.Configuration;
 using Infrastructure.Data.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,7 @@ namespace course_backend.ServiceInstallers
         public void Inject(IServiceCollection serviceCollection, IConfiguration configuration, IHostEnvironment env)
         {
             serviceCollection.Configure<AdminConfig>(configuration.GetSection("MainAdmin"));
+            serviceCollection.Configure<AuthOptions>(configuration.GetSection("Auth"));
         }
     }
 }

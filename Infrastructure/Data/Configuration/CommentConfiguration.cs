@@ -10,7 +10,7 @@ namespace Infrastructure.Data.Configuration
         {
             builder.HasKey(x => x.Id);
             
-            builder.Property(x => x.CreatedTime).HasDefaultValueSql("GETDATE()");
+            builder.Property(x => x.CreatedTime).HasDefaultValueSql("NOW()");
 
             builder.HasOne<User>(x => x.Author)
                 .WithMany(x => x.Comments)

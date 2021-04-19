@@ -32,8 +32,9 @@ namespace Infrastructure.Data
         private IUnitOfWork _currentUnitOfWork;
 
         /* ctor */
-        public AppDbContext(DbContextOptions<AppDbContext> options)
+        public AppDbContext(DbContextOptions options)
             : base(options) {  }
+        
         /* model creating */
         protected override void OnModelCreating(ModelBuilder builder)
         {

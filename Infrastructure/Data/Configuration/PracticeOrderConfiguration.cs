@@ -10,7 +10,7 @@ namespace Infrastructure.Data.Configuration
         {
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.CreatedDate).HasDefaultValueSql("GETDATE()");
+            builder.Property(x => x.CreatedDate).HasDefaultValueSql("NOW()");
 
             builder.HasOne<Lesson>(x => x.Lesson)
                 .WithMany(x => x.PracticeOrders)
