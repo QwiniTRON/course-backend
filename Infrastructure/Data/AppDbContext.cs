@@ -19,7 +19,6 @@ namespace Infrastructure.Data
     {
         // entities
         public  DbSet<User> Users { get; set; }
-        public  DbSet<UserRoleEntity> AppRoles { get; set; }
         
         public DbSet<AppFile> AppFiles { get; set; }
         public DbSet<Chat> Chats { get; set; }
