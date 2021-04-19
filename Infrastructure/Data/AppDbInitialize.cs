@@ -47,7 +47,6 @@ namespace Infrastructure.Data
                     );
                 context.Users.Add(mainAdmin);
 
-
                 List<Lesson> lessons = new List<Lesson>()
                 {
                     new Lesson("Знакомство с библиотекой"),

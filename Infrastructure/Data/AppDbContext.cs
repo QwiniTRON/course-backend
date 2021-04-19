@@ -3,6 +3,8 @@ using course_backend.Abstractions.DI;
 using Domain.Data;
 using Domain.Entity;
 using Infrastructure.Abstractions;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -12,10 +14,13 @@ using Microsoft.Extensions.Hosting;
 
 namespace Infrastructure.Data
 {
-    public class AppDbContext: DbContext, IAppDbContext
+    public class AppDbContext: IdentityDbContext<User, IdentityRole<int>, int, IdentityUserClaim<int>, 
+        UserRoleEntity, IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>, IAppDbContext
     {
         // entities
         public  DbSet<User> Users { get; set; }
+        public  DbSet<UserRoleEntity> AppRoles { get; set; }
+        
         public DbSet<AppFile> AppFiles { get; set; }
         public DbSet<Chat> Chats { get; set; }
         public DbSet<Comment> Comments { get; set; }

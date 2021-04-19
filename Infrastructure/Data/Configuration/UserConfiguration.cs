@@ -10,6 +10,12 @@ namespace Infrastructure.Data.Configuration
         {
             builder.HasKey(x => x.Id);
             builder.HasIndex(x => x.Mail).IsUnique();
+            
+            builder
+                .HasMany(u => u.RolesEntities)
+                .WithOne()
+                .HasForeignKey(r => r.UserId)
+                .IsRequired();
         }
     }
 }

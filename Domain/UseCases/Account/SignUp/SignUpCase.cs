@@ -3,37 +3,58 @@ using System.Threading;
 using System.Threading.Tasks;
 using Domain.Abstractions.Mediatr;
 using Domain.Abstractions.Outputs;
+using Domain.Abstractions.Services;
 using Domain.Data;
+using Domain.Enums;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Domain.UseCases.Account.SignUp
 {
     public class SignUpCase: IUseCase<SignUpInput>
     {
-        private IAppDbContext _context;
+        private readonly IAppDbContext _context;
+        private readonly ILogger<SignUpCase> _logger;
+        private readonly UserManager<Entity.User> _userManager;
+        private readonly IAuthDataProvider _dataProvider;
 
-        public SignUpCase(IAppDbContext context)
+        public SignUpCase(IAppDbContext context, ILogger<SignUpCase> logger, UserManager<Entity.User> userManager, IAuthDataProvider dataProvider)
         {
             _context = context;
+            _logger = logger;
+            _userManager = userManager;
+            _dataProvider = dataProvider;
         }
 
         public async Task<IOutput> Handle(SignUpInput request, CancellationToken cancellationToken)
         {
-            var hasSuchEmail = await _context.Users.AnyAsync(x => x.Mail == request.Mail);
+            var user = new Entity.User(request.Mail);
 
-            if (hasSuchEmail)
+            var registerResult = await _userManager.CreateAsync(user);
+
+            if (registerResult.Succeeded == false)
             {
-                return ActionOutput.Error("Такой email уже зарегистрирован");
+                return ActionOutput.Error("Такой пользователь уже есть");
             }
 
-            string passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
-            var user = new Entity.User(request.Mail, request.Nick, passwordHash, request.Role);
+            await _userManager.AddToRoleAsync(user, UserRoles.Participant.ToString());
+            await _userManager.AddPasswordAsync(user, request.Password);
 
-            _context.Users.Add(user);
+            var userWithRoles = await _context.Users
+                .Include(u => u.RolesEntities).ThenInclude(re => re.Role)
+                .FirstAsync(x => x.Id == user.Id, cancellationToken);
 
-            await _context.SaveChangesAsync();
+            _logger.LogInformation($"User {user} was registered");
             
-            return ActionOutput.Success;
+            var identity = _dataProvider.GetIdentity(request.Mail);
+
+            if (identity is null)
+            {
+               return ActionOutput.Error("Данные не верны");
+            }
+
+            return ActionOutput.SuccessData(new {token = _dataProvider.GetJwtByIdentity(identity)});
         }
     }
 }
