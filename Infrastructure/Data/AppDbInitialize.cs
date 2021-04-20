@@ -53,23 +53,26 @@ namespace Infrastructure.Data
                 {
                     var rolesToAdd = roles
                         .Where(x => dbRoles.All(dbr => dbr.Name != x));
+                    
                     foreach (var role in rolesToAdd)
                     {
                         rolesManager.CreateAsync(new IdentityRole<int>(role)).Wait();
                     }
                 }
-
+                
                 context.SaveChanges();
                 
                 /* init project data */
                 var mainAdmin = new User(adminConfig.Mail);
 
-                userManager.CreateAsync(user:mainAdmin).GetAwaiter().GetResult();
-                userManager.AddPasswordAsync(mainAdmin, adminConfig.Password).GetAwaiter().GetResult();
-                userManager.AddToRoleAsync(mainAdmin, UserRoles.Admin.ToString()).GetAwaiter().GetResult();
-
+                var createResult = userManager.CreateAsync(user:mainAdmin).GetAwaiter().GetResult();
+                
                 context.SaveChanges();
                 
+                var addPasswordResult = userManager.AddPasswordAsync(mainAdmin, adminConfig.Password).GetAwaiter().GetResult();
+                var addRoleResult = userManager.AddToRoleAsync(mainAdmin, UserRoles.Admin.ToString()).GetAwaiter().GetResult();
+
+                context.SaveChanges();
 
                 List<Lesson> lessons = new List<Lesson>()
                 {

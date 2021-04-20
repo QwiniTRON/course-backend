@@ -9,6 +9,8 @@ namespace Infrastructure.Data.Configuration
         public void Configure(EntityTypeBuilder<Message> builder)
         {
             builder.HasKey(x => x.Id);
+            
+            builder.Property(x => x.CreatedTime).HasDefaultValueSql("NOW()");
 
             builder.HasOne<User>(x => x.Author)
                 .WithMany(x => x.Messages)
@@ -22,8 +24,6 @@ namespace Infrastructure.Data.Configuration
                 .WithMany(x => x.Messages)
                 .HasForeignKey(x => x.ContentId)
                 .OnDelete(DeleteBehavior.SetNull);
-
-            builder.Property(x => x.CreatedTime).HasDefaultValueSql("NOW()");
         }
     }
 }

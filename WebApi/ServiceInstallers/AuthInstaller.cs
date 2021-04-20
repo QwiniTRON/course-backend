@@ -26,7 +26,13 @@ namespace course_backend.ServiceInstallers
 
             serviceCollection.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
             
-            serviceCollection.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            serviceCollection.AddAuthentication(options =>
+                {
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(options =>
                 {
                     options.RequireHttpsMetadata = false;
@@ -45,7 +51,14 @@ namespace course_backend.ServiceInstallers
             serviceCollection.AddIdentity<User, IdentityRole<int>>(config =>
             {
                 config.Password.RequiredLength = 4;
-            }).AddEntityFrameworkStores<AppDbContext>();
+                config.Password.RequireDigit = false;
+                config.Password.RequireLowercase = false;
+                config.Password.RequireNonAlphanumeric = false;
+                config.Password.RequireUppercase = false;
+            })
+            .AddUserManager<UserManager<User>>()
+            .AddSignInManager<SignInManager<User>>()
+            .AddEntityFrameworkStores<AppDbContext>();
         }
     }
 }

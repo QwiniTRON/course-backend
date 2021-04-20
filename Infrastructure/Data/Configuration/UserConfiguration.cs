@@ -10,6 +10,7 @@ namespace Infrastructure.Data.Configuration
         {
             builder.HasKey(x => x.Id);
             builder.HasIndex(x => x.Mail).IsUnique();
+            builder.Property(x => x.RegistrationDate).HasDefaultValueSql("NOW()");
             
             builder
                 .HasMany(u => u.RolesEntities)

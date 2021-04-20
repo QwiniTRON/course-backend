@@ -46,6 +46,13 @@ namespace course_backend.Controllers
             return await _dispatcher.DispatchAsync(request);
         }
         
+        [HttpPost("test")]
+        [AuthorizeByRole(UserRoles.Admin)]
+        public async Task<IActionResult> Test()
+        {
+            return Json(new {test = true});
+        }
+        
         /* change nick */
         [HttpPut("nick")]
         [Authorize]

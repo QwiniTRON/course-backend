@@ -27,6 +27,7 @@ namespace Infrastructure.Data
         public DbSet<Message> Messages { get; set; }
         public DbSet<UserProgress> Progresses { get; set; }
         public DbSet<PracticeOrder> PracticeOrders { get; set; }
+        public DbSet<UserRoleEntity> RoleEntities { get; set; }
         
         
         private IUnitOfWork _currentUnitOfWork;

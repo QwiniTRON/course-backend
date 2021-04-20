@@ -22,14 +22,14 @@ namespace Domain.Entity
         public User(string mail)
         {
             Mail = mail;
+            UserName = Mail;
+            Email = Mail;
         }
 
         private List<UserRoles> _roles;
-        public List<UserRoleEntity> RolesEntities { get; private set; }
+        public List<UserRoleEntity> RolesEntities { get; set; }
         public List<UserRoles> Roles => _roles ??= GetRoles();
         
-        
-        public int Id { get; set; }
         public string Mail { get; set; }
         public string Nick { get; set; }
         public string Password { get; set; }
