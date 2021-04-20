@@ -6,6 +6,7 @@ using course_backend.Abstractions.DI;
 using Domain.Data;
 using Infrastructure.Data;
 using Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;

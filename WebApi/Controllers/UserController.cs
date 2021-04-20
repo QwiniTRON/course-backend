@@ -9,6 +9,7 @@ using Domain.UseCases.User.GetUsers;
 using Domain.UseCases.User.UserInfo;
 using Infrastructure.Data;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,19 +19,14 @@ namespace course_backend.Controllers
     public class UserController: Controller
     {
         private readonly IUseCaseDispatcher _dispatcher;
-        private AppDbContext _context;
-        private readonly IMediator _mediator;
 
-        public UserController(IUseCaseDispatcher dispatcher, AppDbContext context, IMediator mediator)
+        public UserController(IUseCaseDispatcher dispatcher)
         {
             _dispatcher = dispatcher;
-            _context = context;
-            _mediator = mediator;
         }
 
         /* ban user */
         [HttpPut("ban")]
-        [Authorize]
         [AuthorizeByRole(UserRoles.Admin)]
         public async Task<IActionResult> BannUser([FromBody] BannInput request)
         {
@@ -39,7 +35,6 @@ namespace course_backend.Controllers
         
         /* change role */
         [HttpPut("role")]
-        [Authorize]
         [AuthorizeByRole(UserRoles.Admin)]
         public async Task<IActionResult> ChangeRole([FromBody] ChangeRoleInput request)
         {
@@ -47,7 +42,7 @@ namespace course_backend.Controllers
         }
         
         [HttpPost("test")]
-        [AuthorizeByRole(UserRoles.Admin)]
+        [AuthorizeByRole(UserRoles.Admin, UserRoles.Participant, UserRoles.Teacher)]
         public async Task<IActionResult> Test()
         {
             return Json(new {test = true});
@@ -55,7 +50,7 @@ namespace course_backend.Controllers
         
         /* change nick */
         [HttpPut("nick")]
-        [Authorize]
+        [AuthorizeByRole(UserRoles.Admin, UserRoles.Participant, UserRoles.Teacher)]
         public async Task<IActionResult> ChangeNick([FromBody] ChangeNickInput request)
         {
             if (HttpContext.User.Identity != null) request.CurrentUserMail = HttpContext.User.Identity.Name;
@@ -64,14 +59,15 @@ namespace course_backend.Controllers
         
         /* get user info */
         [HttpGet("{id}")]
-        [Authorize]
+        [AuthorizeByRole(UserRoles.Admin, UserRoles.Participant, UserRoles.Teacher)]
         public async Task<IActionResult> GetInfo([FromRoute]int id)
         {
             return await _dispatcher.DispatchAsync(new UserInfoInput() {UserId = id});
         }
         
         /* get users */
-        [HttpGet, Authorize]
+        [HttpGet]
+        [AuthorizeByRole(UserRoles.Admin, UserRoles.Participant, UserRoles.Teacher)]
         public async Task<IActionResult> GetUsers([FromQuery]GetUsersInput request)
         {
             return await _dispatcher.DispatchAsync(request);

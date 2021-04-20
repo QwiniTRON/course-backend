@@ -1,4 +1,6 @@
-﻿using course_backend.Abstractions.DI;
+﻿using System.Text;
+using System.Threading.Tasks;
+using course_backend.Abstractions.DI;
 using course_backend.Identity;
 using Domain.Abstractions.Services;
 using Domain.Data;
@@ -7,6 +9,7 @@ using Infrastructure.Data;
 using Infrastructure.Data.Configuration;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,28 +28,6 @@ namespace course_backend.ServiceInstallers
             serviceCollection.AddScoped<IAuthDataProvider, AuthDataProvider>();
 
             serviceCollection.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
-            
-            serviceCollection.AddAuthentication(options =>
-                {
-                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(options =>
-                {
-                    options.RequireHttpsMetadata = false;
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidIssuer = authConfig.ISSUER,
-                        ValidateAudience = true,
-                        ValidAudience = authConfig.AUDIENCE,
-                        ValidateLifetime = true,
-                        IssuerSigningKey = authConfig.GetSymmetricAlgorithmKey(),
-                        ValidateIssuerSigningKey = true
-                    };
-                });
 
             serviceCollection.AddIdentity<User, IdentityRole<int>>(config =>
             {
@@ -59,6 +40,43 @@ namespace course_backend.ServiceInstallers
             .AddUserManager<UserManager<User>>()
             .AddSignInManager<SignInManager<User>>()
             .AddEntityFrameworkStores<AppDbContext>();
+            
+            serviceCollection
+                .AddAuthentication(opts =>
+                {
+                    opts.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opts.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opts.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnForbidden = context =>
+                        {
+                            context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                            return Task.CompletedTask;
+                        },
+                        OnAuthenticationFailed = context =>
+                        {
+                            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                            return Task.CompletedTask;
+                        }
+                    };
+                    
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = authConfig.ISSUER,
+                        ValidAudience = authConfig.AUDIENCE,
+                        IssuerSigningKey = authConfig.GetSymmetricAlgorithmKey(),
+                    };
+                });
         }
     }
 }
