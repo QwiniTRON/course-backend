@@ -59,12 +59,8 @@ namespace course_backend.Identity
                 new Claim(ClaimTypes.Name, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                // new Claim(ClaimsIdentity.DefaultNameClaimType, user.Mail),
-                // new Claim(ClaimTypes.Name, user.Id.ToString()),
-                // new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Roles.First().ToString()),
-                // new Claim(AppClaim.UserIdClaimName, user.Id.ToString()),
-                // new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                // new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             };
 
             claims.AddRange(user.Roles.Select(r => new Claim(ClaimTypes.Role, r.ToString())));
@@ -73,7 +69,7 @@ namespace course_backend.Identity
                 claims, 
                 "Token", 
                 ClaimsIdentity.DefaultNameClaimType, 
-                ClaimsIdentity.DefaultRoleClaimType
+                ClaimTypes.Role
             );
 
             return claimsIdentity;

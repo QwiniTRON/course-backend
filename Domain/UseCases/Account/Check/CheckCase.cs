@@ -34,6 +34,12 @@ namespace Domain.UseCases.Account.Check
                 return ActionOutput.Error("Вы не авторизованы");
             }
 
+            if (user.IsBanned == true)
+            {
+                _logger.LogInformation("User {name} tried to enter with ban", user.Mail);
+                return ActionOutput.Error("Пользователь забанен.");
+            }
+            
             var identity = _dataProvider.GetIdentity(user.Mail);
 
             if (identity is null)

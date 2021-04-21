@@ -9,12 +9,11 @@ namespace Domain.Entity
 {
     public class User: IdentityUser<int>, IEntity
     {
-        public User(string mail, string nick, string password, UserRoles role = UserRoles.Participant)
+        public User(string mail, string nick, string password)
         {
             Mail = mail;
             Nick = nick;
             Password = password;
-            Role = role;
             
             IsBanned = false;
         }
@@ -34,7 +33,6 @@ namespace Domain.Entity
         public string Nick { get; set; }
         public string Password { get; set; }
         public bool IsBanned { get; set; }
-        public UserRoles Role { get; set; }
         public DateTime RegistrationDate { get; set; }
         
 

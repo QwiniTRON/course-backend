@@ -40,6 +40,12 @@ namespace Domain.UseCases.Account.SignIn
                 return ActionOutput.Error("Пользователь не найден");
             }
 
+            if (user.IsBanned == true)
+            {
+                _logger.LogInformation("User {name} tried to enter with ban", request.Mail);
+                return ActionOutput.Error("Пользователь забанен.");
+            }
+            
             var signInResult = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
             if (signInResult.Succeeded == false)

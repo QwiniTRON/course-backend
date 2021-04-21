@@ -26,14 +26,14 @@ namespace Domain.UseCases.Progress.Add
 
             if (user is null)
             {
-                return ActionOutput.Error("User wasn't found");
+                return ActionOutput.Error("Пользователь не был найден");
             }
 
             var lesson = await _context.Lessons.FindAsync(request.LessonId);
 
             if (lesson is null)
             {
-                return ActionOutput.Error("Lesson wasn't found");
+                return ActionOutput.Error("Урок не был найден");
             }
             
             var progress = new UserProgress(user, lesson);
