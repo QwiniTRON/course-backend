@@ -28,21 +28,10 @@ namespace course_backend.Controllers
     [Route("api/v1/account")]
     public class AccountController: Controller
     {
-        private readonly AuthOptions _authOptions;
-        private readonly AppDbContext _context;
-        private readonly IMediator _mediator;
-        private readonly IModelValidate _validate;
-        private readonly IAuthDataProvider _dataProvider;
         private readonly IUseCaseDispatcher _dispatcher;
         
-
-        public AccountController(IOptions<AuthOptions> authOptions, AppDbContext context, IMediator mediator, IModelValidate validate, IAuthDataProvider dataProvider, IUseCaseDispatcher dispatcher)
+        public AccountController(IUseCaseDispatcher dispatcher)
         {
-            _authOptions = authOptions.Value;
-            _context = context;
-            _mediator = mediator;
-            _validate = validate;
-            _dataProvider = dataProvider;
             _dispatcher = dispatcher;
         }
 
@@ -54,14 +43,13 @@ namespace course_backend.Controllers
         }
 
         [HttpPost("signup")]
-        // [AuthorizeByRole(UserRoles.Admin)]
         public async Task<IActionResult> SignUp([FromBody]SignUpInput request)
         {
             return await _dispatcher.DispatchAsync(request);
         }
 
         [HttpPost("check")]
-        [Authorize]
+        [AuthorizeByRole(UserRoles.Admin, UserRoles.Participant, UserRoles.Teacher)]
         public async Task<IActionResult> Check(CheckInput request)
         {
             return await _dispatcher.DispatchAsync(request);
