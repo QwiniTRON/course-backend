@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using course_backend.Identity;
 using course_backend.Implementations;
+using Domain.Abstractions.Services;
 using Domain.Enums;
 using Domain.UseCases.User.Bann;
 using Domain.UseCases.User.ChangeNick;
@@ -19,16 +20,18 @@ namespace course_backend.Controllers
     public class UserController: Controller
     {
         private readonly IUseCaseDispatcher _dispatcher;
+        private readonly ICurrentUserProvider _currentUserProvider;
 
-        public UserController(IUseCaseDispatcher dispatcher)
+        public UserController(IUseCaseDispatcher dispatcher, ICurrentUserProvider currentUserProvider)
         {
             _dispatcher = dispatcher;
+            _currentUserProvider = currentUserProvider;
         }
 
         /* ban user */
         [HttpPut("ban")]
         [AuthorizeByRole(UserRoles.Admin)]
-        public async Task<IActionResult> BannUser([FromBody] BannInput request)
+        public async Task<IActionResult> BanUser([FromBody] BannInput request)
         {
             return await _dispatcher.DispatchAsync(request);
         }
@@ -38,6 +41,7 @@ namespace course_backend.Controllers
         [AuthorizeByRole(UserRoles.Admin)]
         public async Task<IActionResult> ChangeRole([FromBody] ChangeRoleInput request)
         {
+            request.User = await _currentUserProvider.GetCurrentUser();
             return await _dispatcher.DispatchAsync(request);
         }
 
@@ -46,7 +50,7 @@ namespace course_backend.Controllers
         [AuthorizeByRole(UserRoles.Admin, UserRoles.Participant, UserRoles.Teacher)]
         public async Task<IActionResult> ChangeNick([FromBody] ChangeNickInput request)
         {
-            if (HttpContext.User.Identity != null) request.CurrentUserMail = HttpContext.User.Identity.Name;
+            if (HttpContext.User.Identity != null) request.UserId = (await _currentUserProvider.GetCurrentUser()).Id;
             return await _dispatcher.DispatchAsync(request);
         }
         

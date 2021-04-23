@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace course_backend.Controllers
 {
+    [Route("api/v1/practice")]
     public class PracticeOrderController: Controller
     {
         private readonly IUseCaseDispatcher _dispatcher;
@@ -32,7 +33,7 @@ namespace course_backend.Controllers
         /* get many */
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetPracticeOrders(GetPracticesInput request)
+        public async Task<IActionResult> GetPracticeOrders([FromQuery]GetPracticesInput request)
         {
             return await _dispatcher.DispatchAsync(request);
         }
@@ -40,16 +41,18 @@ namespace course_backend.Controllers
         /* get by user id */
         [HttpGet("user/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetOneByUserId(GetOnePracticeInput request)
+        public async Task<IActionResult> GetOneByUserId(GetOnePracticeInput request, [FromRoute]int id)
         {
+            request.UserId = id;
             return await _dispatcher.DispatchAsync(request);
         }
         
         /* get one */
         [HttpGet("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetOneInfo(GetPracticeInfoInput request)
+        public async Task<IActionResult> GetOneInfo(GetPracticeInfoInput request,  [FromRoute]int id)
         {
+            request.PracticeId = id;
             return await _dispatcher.DispatchAsync(request);
         }
         

@@ -1,4 +1,5 @@
-﻿using Domain.Abstractions;
+﻿using System;
+using Domain.Abstractions;
 
 namespace Domain.Entity
 {
@@ -17,6 +18,8 @@ namespace Domain.Entity
 
         public Lesson Lesson { get; set; }
         public int LessonId { get; set; }
+
+        public DateTime CreatedTime { get; set; }
 
         protected UserProgress()
         {

@@ -7,7 +7,7 @@ namespace Domain.UseCases.User.ChangeRole
 {
     public class ChangeRoleInput: IUseCaseInput
     {
-        public int UserId { get; set; }
+        public Entity.User User { get; set; }
         public UserRoles NewRole { get; set; }
     }
     
@@ -16,7 +16,7 @@ namespace Domain.UseCases.User.ChangeRole
         public ChangeRoleInputValidator()
         {
             RuleFor(x => x.NewRole).NotEmpty().WithMessage("Роль обязательна");
-            RuleFor(x => x.UserId).NotEmpty().WithMessage("Пользователь обязателен");
+            RuleFor(x => x.User).NotEmpty().WithMessage("Пользователь обязателен");
         }
     }
 }

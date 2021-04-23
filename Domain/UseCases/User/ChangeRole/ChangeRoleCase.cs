@@ -24,7 +24,7 @@ namespace Domain.UseCases.User.ChangeRole
         
         public async Task<IOutput> Handle(ChangeRoleInput request, CancellationToken cancellationToken)
         {
-            Entity.User user = await _userManager.FindByIdAsync(request.UserId.ToString());
+            Entity.User user = request.User;
             var role = request.NewRole;
 
             if (user is null)

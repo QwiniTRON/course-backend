@@ -10,6 +10,8 @@ namespace Infrastructure.Data.Configuration
         {
             builder.HasKey(x => x.Id);
 
+            builder.Property(x => x.CreatedTime).HasDefaultValueSql("NOW()");
+            
             builder.HasOne<User>(x => x.User)
                 .WithMany(x => x.UserProgresses)
                 .HasForeignKey(x => x.UserId);

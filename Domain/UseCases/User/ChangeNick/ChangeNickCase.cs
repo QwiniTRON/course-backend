@@ -21,7 +21,7 @@ namespace Domain.UseCases.User.ChangeNick
         public async Task<IOutput> Handle(ChangeNickInput request, CancellationToken cancellationToken)
         {
             var currentUser = await _context.Users.FirstOrDefaultAsync(
-                x => x.Mail == request.CurrentUserMail, cancellationToken: cancellationToken
+                x => x.Id == request.UserId, cancellationToken: cancellationToken
                 );
 
             if (currentUser is null)
@@ -31,7 +31,7 @@ namespace Domain.UseCases.User.ChangeNick
 
             currentUser.Nick = request.NewNick;
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
             return ActionOutput.Success;
         }

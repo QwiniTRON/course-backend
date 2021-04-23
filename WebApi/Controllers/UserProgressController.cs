@@ -19,12 +19,10 @@ namespace course_backend.Controllers
     public class UserProgressController: Controller
     {
         private readonly IUseCaseDispatcher _dispatcher;
-        private readonly AppDbContext _context;
         private readonly ICurrentUserProvider _currentUserProvider;
 
-        public UserProgressController(AppDbContext context, IUseCaseDispatcher dispatcher, ICurrentUserProvider currentUserProvider)
+        public UserProgressController(IUseCaseDispatcher dispatcher, ICurrentUserProvider currentUserProvider)
         {
-            _context = context;
             _dispatcher = dispatcher;
             _currentUserProvider = currentUserProvider;
         }

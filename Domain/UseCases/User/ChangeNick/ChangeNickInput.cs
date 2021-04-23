@@ -7,7 +7,7 @@ namespace Domain.UseCases.User.ChangeNick
     {
         public string NewNick { get; set; }
 
-        public string CurrentUserMail { get; set; }
+        public int UserId { get; set; }
     }
     
     public class ChangeNickInputValidator: AbstractValidator<ChangeNickInput>

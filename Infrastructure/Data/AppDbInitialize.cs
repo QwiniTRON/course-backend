@@ -64,6 +64,7 @@ namespace Infrastructure.Data
                 
                 /* init project data */
                 var mainAdmin = new User(adminConfig.Mail);
+                mainAdmin.Nick = adminConfig.Nick;
 
                 var createResult = userManager.CreateAsync(user:mainAdmin).GetAwaiter().GetResult();
                 
@@ -84,6 +85,7 @@ namespace Infrastructure.Data
                     new Lesson("Подходы к разработке", false)
                 };
                 
+                context.Lessons.AddRange(lessons);
                 
                 context.SaveChanges();
             }

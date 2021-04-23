@@ -1,21 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Domain.Abstractions.Mediatr;
 using Domain.Abstractions.Outputs;
 using Domain.Data;
+using Domain.Maps.EntitiesViews;
 using Microsoft.EntityFrameworkCore;
 
 namespace Domain.UseCases.User.GetUsers
 {
     public class GetUsersCase: IUseCase<GetUsersInput>
     {
-        private IAppDbContext _context;
+        private readonly IAppDbContext _context;
+        private readonly IMapper _mapper;
 
-        public GetUsersCase(IAppDbContext context)
+        public GetUsersCase(IAppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
 
@@ -24,11 +29,6 @@ namespace Domain.UseCases.User.GetUsers
             var search = request.Search ?? "";
             var page = request.Page ?? 1;
             var limit = request.Limit ?? 16;
-
-            if (String.IsNullOrEmpty(search))
-            {
-                return ActionOutput.Error("Search was null");
-            }
             
             var users = await _context.Users
                 .AsNoTracking()
@@ -37,7 +37,7 @@ namespace Domain.UseCases.User.GetUsers
                 .Take(limit)
                 .ToListAsync(cancellationToken: cancellationToken);
 
-            return ActionOutput.SuccessData(new {users = users});
+            return ActionOutput.SuccessData(_mapper.Map<List<Entity.User>, List<UserView>>(users));
         }
     }
 }

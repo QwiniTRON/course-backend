@@ -30,6 +30,7 @@ namespace Domain.UseCases.Account.SignUp
         public async Task<IOutput> Handle(SignUpInput request, CancellationToken cancellationToken)
         {
             var user = new Entity.User(request.Mail);
+            user.Nick = request.Nick;
 
             var registerResult = await _userManager.CreateAsync(user);
 
