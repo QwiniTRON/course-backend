@@ -40,9 +40,20 @@ namespace Domain.UseCases.PracticeOrder.Add
                 return ActionOutput.Error("Урок не был найден");
             }
 
+            if (lesson.IsPractice == false)
+            {
+                return ActionOutput.Error("Урок не практический");
+            }
+
             using var unit = _context.CreateUnitOfWork();
 
             var fileSaveResult = await _fileUploader.SaveFile(request.CodeFile);
+
+            if (fileSaveResult.Succeeded == false)
+            {
+                return ActionOutput.Error("Что-то пошло не так");
+            }
+            
             var filePath = fileSaveResult.Data.OperatedFilePath;
             var filePathRelated = fileSaveResult.Data.OperatedFileRelatedPath;
             var fileEntity = new AppFile(request.CodeFile.FileName, filePath, filePathRelated);

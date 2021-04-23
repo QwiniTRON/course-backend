@@ -21,7 +21,7 @@ namespace Domain.Entity
 
         
         public User Teacher { get; set; }
-        public int TeacherId { get; set; }
+        public int? TeacherId { get; set; }
 
         public AppFile PracticeContent { get; set; }
         public int PracticeContentId { get; set; }

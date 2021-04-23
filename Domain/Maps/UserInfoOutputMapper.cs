@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using AutoMapper;
+using Domain.Enums;
 using Domain.UseCases.User.UserInfo;
 
 namespace Domain.Maps

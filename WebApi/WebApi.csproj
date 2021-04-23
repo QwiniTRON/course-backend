@@ -27,7 +27,7 @@
     <ItemGroup>
       <Folder Include="Abstractions" />
       <Folder Include="Filters" />
-      <Folder Include="wwwroot" />
+      <Folder Include="wwwroot\files" />
     </ItemGroup>
 
     <ItemGroup>

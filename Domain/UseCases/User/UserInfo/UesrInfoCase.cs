@@ -4,6 +4,7 @@ using AutoMapper;
 using Domain.Abstractions.Mediatr;
 using Domain.Abstractions.Outputs;
 using Domain.Data;
+using Domain.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Domain.UseCases.User.UserInfo
@@ -13,22 +14,26 @@ namespace Domain.UseCases.User.UserInfo
         private IAppDbContext _context;
         private IMapper _mapper;
 
-        public UesrInfoCase(IAppDbContext context)
+        public UesrInfoCase(IAppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         
         public async Task<IOutput> Handle(UserInfoInput request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken: cancellationToken);
-
+            var user = await _context.Users
+                .AsNoTracking()
+                .WithRoles()
+                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken: cancellationToken);
+            
             if (user is null)
             {
-                return ActionOutput.Error("User wasn't found");
+                return ActionOutput.Error("Пользователь не был найден");
             }
 
-            return ActionOutput.SuccessData(_mapper.Map<Entity.User, UserInfoOutput>(user));
+            return ActionOutput.SuccessData(_mapper.Map<UserInfoOutput>(user));
         }
     }
 }

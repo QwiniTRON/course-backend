@@ -50,7 +50,7 @@ namespace course_backend.Controllers
         [AuthorizeByRole(UserRoles.Admin, UserRoles.Participant, UserRoles.Teacher)]
         public async Task<IActionResult> ChangeNick([FromBody] ChangeNickInput request)
         {
-            if (HttpContext.User.Identity != null) request.UserId = (await _currentUserProvider.GetCurrentUser()).Id;
+            request.UserId = (await _currentUserProvider.GetCurrentUser()).Id;
             return await _dispatcher.DispatchAsync(request);
         }
         

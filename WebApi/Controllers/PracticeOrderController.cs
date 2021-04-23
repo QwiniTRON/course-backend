@@ -25,7 +25,7 @@ namespace course_backend.Controllers
         /* add new order */
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> AddPracticeOrder(AddPracticeOrderInput request)
+        public async Task<IActionResult> AddPracticeOrder([FromForm]AddPracticeOrderInput request)
         {
             return await _dispatcher.DispatchAsync(request);
         }
@@ -41,7 +41,7 @@ namespace course_backend.Controllers
         /* get by user id */
         [HttpGet("user/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetOneByUserId(GetOnePracticeInput request, [FromRoute]int id)
+        public async Task<IActionResult> GetOneByUserId([FromBody]GetOnePracticeInput request, [FromRoute]int id)
         {
             request.UserId = id;
             return await _dispatcher.DispatchAsync(request);
@@ -50,16 +50,16 @@ namespace course_backend.Controllers
         /* get one */
         [HttpGet("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetOneInfo(GetPracticeInfoInput request,  [FromRoute]int id)
+        public async Task<IActionResult> GetOneInfo([FromRoute]int id)
         {
-            request.PracticeId = id;
+            var request = new GetPracticeInfoInput() {PracticeId = id};
             return await _dispatcher.DispatchAsync(request);
         }
         
         /* resolve */
         [HttpPut("resolve")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> Resolve(ResolvePracticeInput request)
+        public async Task<IActionResult> Resolve([FromBody]ResolvePracticeInput request)
         {
             return await _dispatcher.DispatchAsync(request);
         }
@@ -67,7 +67,7 @@ namespace course_backend.Controllers
         /* reject */
         [HttpPut("reject")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> Reject(RejectPracticeInput request)
+        public async Task<IActionResult> Reject([FromBody]RejectPracticeInput request)
         {
             return await _dispatcher.DispatchAsync(request);
         }
