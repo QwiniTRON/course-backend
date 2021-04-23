@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Data
 {
-    public interface IAppDbContext
+    public interface IAppDbContext: IUnitOfWorkCreator
     {
         public  DbSet<User> Users { get; set; }
         public DbSet<AppFile> AppFiles { get; set; }

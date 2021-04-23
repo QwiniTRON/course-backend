@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using IUnitOfWork = Domain.Data.IUnitOfWork;
 
 namespace Infrastructure.Data
 {

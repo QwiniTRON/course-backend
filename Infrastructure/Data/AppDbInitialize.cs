@@ -76,12 +76,12 @@ namespace Infrastructure.Data
 
                 List<Lesson> lessons = new List<Lesson>()
                 {
-                    new Lesson("Знакомство с библиотекой"),
-                    new Lesson("Основные понятия"),
-                    new Lesson("Что такое код"),
-                    new Lesson("Примеры кода"),
-                    new Lesson("Компанент"),
-                    new Lesson("Подходы к разработке")
+                    new Lesson("Знакомство с библиотекой", false),
+                    new Lesson("Основные понятия", false),
+                    new Lesson("Что такое код", false),
+                    new Lesson("Примеры кода", true),
+                    new Lesson("Компанент", false),
+                    new Lesson("Подходы к разработке", false)
                 };
                 
                 
