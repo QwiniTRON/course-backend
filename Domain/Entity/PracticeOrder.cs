@@ -10,12 +10,16 @@ namespace Domain.Entity
         public User Author { get; set; }
         public int AuthorId { get; set; }
 
+        
         public string RejectReason { get; set; }
         public bool IsDone { get; set; }
+        public bool IsResolved { get; set; }
 
+        
         public Lesson Lesson { get; set; }
         public int LessonId { get; set; }
 
+        
         public User Teacher { get; set; }
         public int TeacherId { get; set; }
 
@@ -26,10 +30,9 @@ namespace Domain.Entity
         
         
         /* ctors */
-        public PracticeOrder(User author, User teacher, Lesson lesson, AppFile practiceContent)
+        public PracticeOrder(User author, Lesson lesson, AppFile practiceContent)
         {
             Author = author;
-            Teacher = teacher;
             Lesson = lesson;
             PracticeContent = practiceContent;
             

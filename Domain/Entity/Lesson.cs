@@ -5,13 +5,15 @@ namespace Domain.Entity
 {
     public class Lesson: IEntity
     {
-        public Lesson(string name)
+        public Lesson(string name, bool isPractice)
         {
             Name = name;
+            IsPractice = isPractice;
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
+        public bool IsPractice { get; set; }
 
         public List<UserProgress> UserProgresses { get; set; }
         public List<Comment> Comments { get; set; }

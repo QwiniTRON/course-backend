@@ -21,7 +21,7 @@ namespace Domain.UseCases.User.GetUsers
 
         public async Task<IOutput> Handle(GetUsersInput request, CancellationToken cancellationToken)
         {
-            var search = request.Search;
+            var search = request.Search ?? "";
             var page = request.Page ?? 1;
             var limit = request.Limit ?? 16;
 

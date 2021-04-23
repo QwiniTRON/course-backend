@@ -14,7 +14,6 @@ namespace Domain.UseCases.User.GetUsers
     {
         public GetUsersInputValidator()
         {
-            RuleFor(x => x.Search).NotEmpty();
         }
     }
 }
