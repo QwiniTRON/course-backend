@@ -33,6 +33,7 @@ namespace Domain.UseCases.PracticeOrder.Reject
             practice.IsDone = true;
             practice.RejectReason = request.Description;
             practice.IsResolved = false;
+            practice.TeacherId = request.TeacherId;
 
             _context.PracticeOrders.Update(practice);
 

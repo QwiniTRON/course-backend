@@ -36,7 +36,8 @@ namespace course_backend.Services
                 return OperationResult<FileUploaderOutput>.ErrorData(e.ToString(), e);
             }
             
-            return OperationResult<FileUploaderOutput>.SuccessData(new FileUploaderOutput(path));
+            return OperationResult<FileUploaderOutput>
+                .SuccessData(new FileUploaderOutput(path, FileFolderDefault + file.FileName));
         }
 
         /* delete */
@@ -53,7 +54,7 @@ namespace course_backend.Services
                 return OperationResult<FileUploaderOutput>.ErrorData(e.ToString(), e);
             }
             
-            return OperationResult<FileUploaderOutput>.SuccessData(new FileUploaderOutput(path));
+            return OperationResult<FileUploaderOutput>.SuccessData(new FileUploaderOutput(path, path));
         }
 
         public string SetFileFolderDefault(string folderPath)

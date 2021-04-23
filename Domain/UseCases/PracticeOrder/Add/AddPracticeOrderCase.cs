@@ -44,7 +44,8 @@ namespace Domain.UseCases.PracticeOrder.Add
 
             var fileSaveResult = await _fileUploader.SaveFile(request.CodeFile);
             var filePath = fileSaveResult.Data.OperatedFilePath;
-            var fileEntity = new AppFile(request.CodeFile.FileName, filePath);
+            var filePathRelated = fileSaveResult.Data.OperatedFileRelatedPath;
+            var fileEntity = new AppFile(request.CodeFile.FileName, filePath, filePathRelated);
             await _context.AppFiles.AddAsync(fileEntity, cancellationToken);
 
             var order = new Entity.PracticeOrder(author, lesson, fileEntity);

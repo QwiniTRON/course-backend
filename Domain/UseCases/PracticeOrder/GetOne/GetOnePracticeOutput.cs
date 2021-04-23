@@ -1,5 +1,6 @@
 ﻿using System;
 using Domain.Abstractions.Mediatr;
+using Domain.Maps.EntitiesViews;
 
 namespace Domain.UseCases.PracticeOrder.GetOne
 {
@@ -11,7 +12,7 @@ namespace Domain.UseCases.PracticeOrder.GetOne
         public bool IsDone { get; set; }
         public bool IsResolved { get; set; }
 
-        public TYPE Type { get; set; }
+        public UserView Author { get; set; }
 
         public GetOnePracticeOutput() {}
     }

@@ -5,11 +5,13 @@ namespace course_backend.Services
 {
     public class FileUploaderOutput : IFileUploaderOutput
     {
-        public FileUploaderOutput(string operatedFilePath)
+        public FileUploaderOutput(string operatedFilePath, string operatedFileRelatedPath)
         {
             OperatedFilePath = operatedFilePath;
+            OperatedFileRelatedPath = operatedFileRelatedPath;
         }
 
         public string OperatedFilePath { get; set; }
+        public string OperatedFileRelatedPath { get; set; }
     }
 }
