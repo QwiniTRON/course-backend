@@ -22,7 +22,8 @@ namespace course_backend.Services
         /* save */
         public async Task<IOperationResult<IFileUploaderOutput>> SaveFile(IFormFile file, string path = null)
         {
-            path ??=  _appEnvironment.WebRootPath + FileFolderDefault + file.FileName;
+            string fileUniqName =  GetUniqFileName(file.FileName);
+            path ??=  _appEnvironment.WebRootPath + FileFolderDefault + fileUniqName;
 
             try
             {
@@ -37,7 +38,7 @@ namespace course_backend.Services
             }
             
             return OperationResult<FileUploaderOutput>
-                .SuccessData(new FileUploaderOutput(path, FileFolderDefault + file.FileName));
+                .SuccessData(new FileUploaderOutput(path, FileFolderDefault + fileUniqName));
         }
 
         /* delete */
@@ -57,6 +58,8 @@ namespace course_backend.Services
             return OperationResult<FileUploaderOutput>.SuccessData(new FileUploaderOutput(path, path));
         }
 
+        private string GetUniqFileName(string fileName) => DateTime.Now.ToFileTimeUtc().ToString() + "_" + fileName;
+        
         public string SetFileFolderDefault(string folderPath)
         {
             FileFolderDefault = folderPath;
