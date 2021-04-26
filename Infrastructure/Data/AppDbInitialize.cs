@@ -63,6 +63,7 @@ namespace Infrastructure.Data
                 context.SaveChanges();
                 
                 /* init project data */
+                /* admin */
                 var mainAdmin = new User(adminConfig.Mail);
                 mainAdmin.Nick = adminConfig.Nick;
 
@@ -75,6 +76,7 @@ namespace Infrastructure.Data
 
                 context.SaveChanges();
 
+                /* lessons */
                 List<Lesson> lessons = new List<Lesson>()
                 {
                     new Lesson("Знакомство с библиотекой", false),

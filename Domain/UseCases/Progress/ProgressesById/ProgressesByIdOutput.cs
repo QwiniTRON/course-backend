@@ -1,6 +1,6 @@
 ﻿using System;
 using Domain.Abstractions.Mediatr;
-using Domain.Maps.EntitiesViews;
+using Domain.Maps.Views;
 
 namespace Domain.UseCases.Progress.ProgressesById
 {

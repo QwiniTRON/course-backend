@@ -29,6 +29,7 @@ namespace course_backend.ServiceInstallers
 
             serviceCollection.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
 
+            /* add identity */
             serviceCollection.AddIdentity<User, IdentityRole<int>>(config =>
             {
                 config.Password.RequiredLength = 4;
@@ -41,6 +42,7 @@ namespace course_backend.ServiceInstallers
             .AddSignInManager<SignInManager<User>>()
             .AddEntityFrameworkStores<AppDbContext>();
             
+            /* jwt auth configure */
             serviceCollection
                 .AddAuthentication(opts =>
                 {

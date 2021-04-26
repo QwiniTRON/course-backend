@@ -1,7 +1,7 @@
 ﻿using System;
 using Domain.Abstractions.Mediatr;
 using Domain.Entity;
-using Domain.Maps.EntitiesViews;
+using Domain.Maps.Views;
 
 namespace Domain.UseCases.PracticeOrder.OneInfo
 {

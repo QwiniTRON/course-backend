@@ -5,7 +5,7 @@ using AutoMapper;
 using Domain.Abstractions.Mediatr;
 using Domain.Abstractions.Outputs;
 using Domain.Data;
-using Domain.Maps.EntitiesViews;
+using Domain.Maps.Views;
 using Microsoft.EntityFrameworkCore;
 
 namespace Domain.UseCases.Lesson

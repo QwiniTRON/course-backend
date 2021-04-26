@@ -14,10 +14,12 @@ namespace Infrastructure.Data.Configuration
 
             builder.HasOne<User>(x => x.Author)
                 .WithMany(x => x.Comments)
-                .HasForeignKey(x => x.AuthorId);
+                .HasForeignKey(x => x.AuthorId)
+                .IsRequired();
 
             builder.HasOne<Lesson>(x => x.Lesson)
-                .WithMany(x => x.Comments);
+                .WithMany(x => x.Comments)
+                .IsRequired();
         }
     }
 }

@@ -14,11 +14,13 @@ namespace Infrastructure.Data.Configuration
             
             builder.HasOne<User>(x => x.User)
                 .WithMany(x => x.UserProgresses)
-                .HasForeignKey(x => x.UserId);
+                .HasForeignKey(x => x.UserId)
+                .IsRequired();
             
             builder.HasOne<Lesson>(x => x.Lesson)
                 .WithMany(x => x.UserProgresses)
-                .HasForeignKey(x => x.LessonId);
+                .HasForeignKey(x => x.LessonId)
+                .IsRequired();
         }
     }
 }

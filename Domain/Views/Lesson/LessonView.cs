@@ -1,4 +1,4 @@
-﻿namespace Domain.Maps.EntitiesViews
+﻿namespace Domain.Maps.Views
 {
     public class LessonView
     {

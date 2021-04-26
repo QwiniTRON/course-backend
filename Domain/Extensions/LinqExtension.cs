@@ -25,6 +25,7 @@ namespace Domain.Extensions
 
             return query;
         }
+        
         public static IQueryable<User> WithRoles(this IQueryable<User> query) =>
             query.Include(u => u.RolesEntities).ThenInclude(re => re.Role);
     }
