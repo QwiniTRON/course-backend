@@ -27,7 +27,7 @@ namespace course_backend.Controllers
         /* add comment */
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> CreateComment(AddCommentInput request)
+        public async Task<IActionResult> CreateComment([FromBody]AddCommentInput request)
         {
             return await _dispatcher.DispatchAsync(request);
         } 
@@ -44,7 +44,7 @@ namespace course_backend.Controllers
         /* update */
         [HttpPut("{id}")]
         [AuthorizeByRole(UserRoles.Admin, UserRoles.Teacher)]
-        public async Task<IActionResult> UpdateComment(EditCommentInput request, [FromRoute]int id)
+        public async Task<IActionResult> UpdateComment([FromBody]EditCommentInput request, [FromRoute]int id)
         {
             request.CommentId = id;
             return await _dispatcher.DispatchAsync(request);

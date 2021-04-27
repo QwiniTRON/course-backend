@@ -8,9 +8,15 @@ namespace Domain.Maps
     {
         public EntitiesView()
         {
+            /* user */
             CreateMap<Entity.User, UserView>();
+            CreateMap<Entity.User, UserViewDetailed>();
+            
+            /* lesson */
             CreateMap<Entity.Lesson, LessonView>();
             CreateMap<Entity.Lesson, LessonDetailedView>();
+            
+            /* comment */
             CreateMap<Entity.Comment, CommentView>();
         }
     }

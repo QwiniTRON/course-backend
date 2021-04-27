@@ -27,9 +27,11 @@ namespace Domain.UseCases.Lesson.GetOne
         
         public async Task<IOutput> Handle(LessonGetOneInput request, CancellationToken cancellationToken)
         {
-            var lesson = await _context.Lessons
-                .Include(X => X.Comments)
-                .FirstOrDefaultAsync(x => x.Id == request.LessonId);
+            Entity.Lesson lesson = await _context.Lessons
+                .Include(x => x.Comments)
+                .Include(x => x.Subject)
+                .FirstOrDefaultAsync(x => x.Id == request.LessonId, 
+                    cancellationToken: cancellationToken);
 
             if (lesson is null)
             {

@@ -26,6 +26,8 @@ namespace Infrastructure.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
+        public DbSet<SubjectSertificate> SubjectSertificates { get; set; }
         public DbSet<UserProgress> Progresses { get; set; }
         public DbSet<PracticeOrder> PracticeOrders { get; set; }
         public DbSet<UserRoleEntity> RoleEntities { get; set; }

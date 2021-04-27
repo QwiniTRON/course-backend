@@ -41,7 +41,7 @@ namespace course_backend.Controllers
         /* get by user id */
         [HttpGet("user/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetOneByUserId([FromBody]GetOnePracticeInput request, [FromRoute]int id)
+        public async Task<IActionResult> GetOneByUserId(GetOnePracticeInput request, [FromRoute]int id)
         {
             request.UserId = id;
             return await _dispatcher.DispatchAsync(request);

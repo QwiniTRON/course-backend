@@ -76,15 +76,20 @@ namespace Infrastructure.Data
 
                 context.SaveChanges();
 
+                /* subjects */
+                var reactSubject = new Subject("React.js");
+                context.Add(reactSubject);
+                context.SaveChanges();
+                
                 /* lessons */
                 List<Lesson> lessons = new List<Lesson>()
                 {
-                    new Lesson("Знакомство с библиотекой", false),
-                    new Lesson("Основные понятия", false),
-                    new Lesson("Что такое код", false),
-                    new Lesson("Примеры кода", true),
-                    new Lesson("Компанент", false),
-                    new Lesson("Подходы к разработке", false)
+                    new Lesson("Знакомство с библиотекой", false, reactSubject),
+                    new Lesson("Основные понятия", false, reactSubject),
+                    new Lesson("Что такое код", false, reactSubject),
+                    new Lesson("Примеры кода", true, reactSubject),
+                    new Lesson("Компанент", false, reactSubject),
+                    new Lesson("Подходы к разработке", false, reactSubject)
                 };
                 
                 context.Lessons.AddRange(lessons);
