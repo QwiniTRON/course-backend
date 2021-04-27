@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
+using course_backend.Identity;
 using course_backend.Implementations;
+using Domain.Enums;
 using Domain.UseCases.PracticeOrder.Add;
 using Domain.UseCases.PracticeOrder.GetMany;
 using Domain.UseCases.PracticeOrder.GetOne;
@@ -58,7 +60,7 @@ namespace course_backend.Controllers
         
         /* resolve */
         [HttpPut("resolve")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [AuthorizeByRole(UserRoles.Teacher, UserRoles.Admin)]
         public async Task<IActionResult> Resolve([FromBody]ResolvePracticeInput request)
         {
             return await _dispatcher.DispatchAsync(request);
@@ -66,7 +68,7 @@ namespace course_backend.Controllers
         
         /* reject */
         [HttpPut("reject")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [AuthorizeByRole(UserRoles.Teacher, UserRoles.Admin)]
         public async Task<IActionResult> Reject([FromBody]RejectPracticeInput request)
         {
             return await _dispatcher.DispatchAsync(request);
