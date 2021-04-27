@@ -24,7 +24,12 @@ namespace course_backend.Controllers
         }
         
         
-        /* add comment */
+        /// <summary>
+        ///     Add new comment for lesson
+        /// </summary>
+        /// <remarks>
+        ///     # add new comment to lesson
+        /// </remarks>
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> CreateComment([FromBody]AddCommentInput request)
@@ -32,31 +37,46 @@ namespace course_backend.Controllers
             return await _dispatcher.DispatchAsync(request);
         } 
         
-        /* delete */
+        /// <summary>
+        ///     Delete comment by id
+        /// </summary>
+        /// <remarks>
+        ///     # Delete comment by id
+        /// </remarks>
         [HttpDelete("{id}")]
         [AuthorizeByRole(UserRoles.Admin, UserRoles.Teacher)]
-        public async Task<IActionResult> DeleteComment(DeleteCommentInput request, [FromRoute]int id)
+        public async Task<IActionResult> DeleteComment([FromRoute]int id)
         {
-            request.CommentId = id;
+            var request = new DeleteCommentInput { CommentId = id};
             return await _dispatcher.DispatchAsync(request);
         } 
         
-        /* update */
+        /// <summary>
+        ///     Update comment by id
+        /// </summary>
+        /// <remarks>
+        ///     # Update comment by id
+        /// </remarks>
         [HttpPut("{id}")]
         [AuthorizeByRole(UserRoles.Admin, UserRoles.Teacher)]
         public async Task<IActionResult> UpdateComment([FromBody]EditCommentInput request, [FromRoute]int id)
         {
-            request.CommentId = id;
+            request.SetCommentId(id);
             return await _dispatcher.DispatchAsync(request);
         } 
         
         
-        /* get by lesson */
+        /// <summary>
+        ///     Get comments for lesson
+        /// </summary>
+        /// <remarks>
+        ///     # Get comments for lesson
+        /// </remarks>
         [HttpGet("lesson/{id}")]
         [AuthorizeByRole(UserRoles.Admin, UserRoles.Teacher)]
-        public async Task<IActionResult> GetByLesson(CommentByLessonInput request, [FromRoute]int id)
+        public async Task<IActionResult> GetByLesson([FromRoute]int id)
         {
-            request.LessonId= id;
+            var request = new CommentByLessonInput {LessonId = id};
             return await _dispatcher.DispatchAsync(request);
         } 
     }

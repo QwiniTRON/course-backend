@@ -5,7 +5,10 @@ namespace Domain.UseCases.Progress.ProgressesById
 {
     public class ProgressesByIdInput: IUseCaseInput
     {
-        public int UserId { get; set; }
+        public int UserId { get; private set; }
+        public int SubjectId { get; set; }
+        
+        public int SetUserId(int id) => UserId = id;
     }
     
     public class ProgressesByIdInputValidator: AbstractValidator<ProgressesByIdInput>
@@ -13,6 +16,7 @@ namespace Domain.UseCases.Progress.ProgressesById
         public ProgressesByIdInputValidator()
         {
             RuleFor(x => x.UserId).NotEmpty();
+            RuleFor(x => x.SubjectId).NotEmpty();
         }
     }
 }

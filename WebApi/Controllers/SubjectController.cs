@@ -21,7 +21,14 @@ namespace course_backend.Controllers
             _currentUserProvider = currentUserProvider;
         }
 
-        
+        /// <summary>
+        ///     Create certificate for user by subject by id
+        /// </summary>
+        /// <remarks>
+        ///     # Create certificate for user by subject by id
+        /// 
+        ///     ### ! creates if all lessons are done
+        /// </remarks>
         [HttpPost("sertificate")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> CreateSubjectSertificate([FromBody]AddCertificateInput request)
@@ -30,6 +37,12 @@ namespace course_backend.Controllers
             return await _dispatcher.DispatchAsync(request);
         }
         
+        /// <summary>
+        ///     Get subject with all lessons
+        /// </summary>
+        /// <remarks>
+        ///     # Get subject with all lessons
+        /// </remarks>
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetSubject([FromQuery]GetSubjectInfoInput request)

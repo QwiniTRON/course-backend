@@ -28,7 +28,13 @@ namespace course_backend.Controllers
             _currentUserProvider = currentUserProvider;
         }
 
-        /* ban user */
+        /// <summary>
+        ///     Ban user
+        /// </summary>
+        /// <remarks>
+        ///     # Ban user
+        ///     ### access - only admin
+        /// </remarks>
         [HttpPut("ban")]
         [AuthorizeByRole(UserRoles.Admin)]
         public async Task<IActionResult> BanUser([FromBody] BannInput request)
@@ -36,7 +42,13 @@ namespace course_backend.Controllers
             return await _dispatcher.DispatchAsync(request);
         }
         
-        /* change role */
+        /// <summary>
+        ///     Change user role
+        /// </summary>
+        /// <remarks>
+        ///     # Change user role
+        ///     ### access - only admin
+        /// </remarks>
         [HttpPut("role")]
         [AuthorizeByRole(UserRoles.Admin)]
         public async Task<IActionResult> ChangeRole([FromBody] ChangeRoleInput request)
@@ -45,7 +57,12 @@ namespace course_backend.Controllers
             return await _dispatcher.DispatchAsync(request);
         }
 
-        /* change nick */
+        /// <summary>
+        ///     Change user nick
+        /// </summary>
+        /// <remarks>
+        ///     # Change user nick
+        /// </remarks>
         [HttpPut("nick")]
         [AuthorizeByRole(UserRoles.Admin, UserRoles.Participant, UserRoles.Teacher)]
         public async Task<IActionResult> ChangeNick([FromBody] ChangeNickInput request)
@@ -54,6 +71,13 @@ namespace course_backend.Controllers
             return await _dispatcher.DispatchAsync(request);
         }
         
+        /// <summary>
+        ///     Get full user info for current user(client)
+        /// </summary>
+        /// <remarks>
+        ///     # Get full user info for current user(client)
+        ///     ## with authorization data
+        /// </remarks>
         [HttpGet("current")]
         [AuthorizeByRole(UserRoles.Admin, UserRoles.Participant, UserRoles.Teacher)]
         public async Task<IActionResult> GetCurrentUesrInfo()
@@ -63,7 +87,12 @@ namespace course_backend.Controllers
             return await _dispatcher.DispatchAsync(request);
         }
         
-        /* get user info */
+        /// <summary>
+        ///     Get full user info by id
+        /// </summary>
+        /// <remarks>
+        ///     # Get full user info by id
+        /// </remarks>
         [HttpGet("{id}")]
         [AuthorizeByRole(UserRoles.Admin, UserRoles.Participant, UserRoles.Teacher)]
         public async Task<IActionResult> GetInfo([FromRoute]int id)
@@ -71,7 +100,12 @@ namespace course_backend.Controllers
             return await _dispatcher.DispatchAsync(new UserInfoInput() {UserId = id});
         }
 
-        /* get users */
+        /// <summary>
+        ///     Get all users
+        /// </summary>
+        /// <remarks>
+        ///     # Get all users
+        /// </remarks>
         [HttpGet]
         [AuthorizeByRole(UserRoles.Admin, UserRoles.Participant, UserRoles.Teacher)]
         public async Task<IActionResult> GetUsers([FromQuery]GetUsersInput request)

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using course_backend.Abstractions.DI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +16,7 @@ namespace course_backend.ServiceInstallers
         {
             serviceCollection.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "course_backend", Version = "v1"});
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Reacter backend", Version = "v1"});
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -40,6 +42,9 @@ namespace course_backend.ServiceInstallers
                     }
                 });
                 
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
         }
     }

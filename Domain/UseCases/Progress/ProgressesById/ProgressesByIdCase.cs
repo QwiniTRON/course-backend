@@ -27,8 +27,9 @@ namespace Domain.UseCases.Progress.ProgressesById
         {
             var progresses = await _context.Progresses
                 .Include(x => x.Lesson)
+                    .ThenInclude(x => x.Subject)
                 .Include(x => x.User)
-                .Where(x => x.UserId == request.UserId)
+                .Where(x => x.UserId == request.UserId && x.Lesson.SubjectId == request.SubjectId)
                 .ToListAsync(cancellationToken: cancellationToken);
 
             return ActionOutput.SuccessData(_mapper.Map<List<ProgressesByIdOutput>>(progresses));

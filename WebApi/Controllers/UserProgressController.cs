@@ -27,6 +27,12 @@ namespace course_backend.Controllers
             _currentUserProvider = currentUserProvider;
         }
         
+        /// <summary>
+        ///     Create a new mark that lesson is done
+        /// </summary>
+        /// <remarks>
+        ///     # Create a new mark that lesson is done
+        /// </remarks>
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> AddProgress([FromBody]AddProgressInput request)
@@ -43,12 +49,16 @@ namespace course_backend.Controllers
             return await _dispatcher.DispatchAsync(request);
         }
         
+        /// <summary>
+        ///     Get all progresses for user by subject id
+        /// </summary>
+        /// <remarks>
+        ///     # Get all progresses for user by subject id
+        /// </remarks>
         [HttpGet("current")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetProgressCurrent()
+        public async Task<IActionResult> GetProgressCurrent([FromQuery] ProgressesByIdInput request)
         {
-            var request = new ProgressesByIdInput();
-            
             var currentUser = await _currentUserProvider.GetCurrentUser();
 
             if (currentUser is null)
@@ -56,18 +66,22 @@ namespace course_backend.Controllers
                 return Json(ActionOutput.Error("Пользователь не найден"));
             }
             
-            request.UserId = currentUser.Id;
+            request.SetUserId(currentUser.Id);
             
             return await _dispatcher.DispatchAsync(request);
         }
         
-        [HttpGet("{id}")]
+        /// <summary>
+        ///     Get all progresses for user by subject id
+        /// </summary>
+        /// <remarks>
+        ///     # Get all progresses for user by user id and subject id
+        /// </remarks>
+        [HttpGet("{userid}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetProgress([FromRoute]int id)
+        public async Task<IActionResult> GetProgress([FromQuery] ProgressesByIdInput request, [FromRoute]int userid)
         {
-            var request = new ProgressesByIdInput();
-            
-            request.UserId = id;
+            request.SetUserId(userid);
             
             return await _dispatcher.DispatchAsync(request);
         }

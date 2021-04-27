@@ -29,6 +29,7 @@ namespace Domain.UseCases.Lesson.GetOne
         {
             Entity.Lesson lesson = await _context.Lessons
                 .Include(x => x.Comments)
+                    .ThenInclude(x => x.Author)
                 .Include(x => x.Subject)
                 .FirstOrDefaultAsync(x => x.Id == request.LessonId, 
                     cancellationToken: cancellationToken);

@@ -18,7 +18,12 @@ namespace course_backend.Controllers
             _dispatcher = dispatcher;
         }
 
-        /* get all lessons */
+        /// <summary>
+        ///     Get all lessons
+        /// </summary>
+        /// <remarks>
+        ///     # Get all lessons
+        /// </remarks>
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetLessons(GetLessonsInput request)
@@ -26,12 +31,17 @@ namespace course_backend.Controllers
             return await _dispatcher.DispatchAsync(request);
         } 
         
-        /* get one info */
+        /// <summary>
+        ///     Get lesson by id
+        /// </summary>
+        /// <remarks>
+        ///     # Get lesson by id
+        /// </remarks>
         [HttpGet("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetLessons(LessonGetOneInput request, [FromRoute]int id)
         {
-            request.LessonId = id;
+            request.SetLessonId(id);
             return await _dispatcher.DispatchAsync(request);
         } 
     }

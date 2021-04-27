@@ -24,7 +24,12 @@ namespace course_backend.Controllers
             _dispatcher = dispatcher;
         }
 
-        /* add new order */
+        /// <summary>
+        ///     Add order to complete a practice lesson
+        /// </summary>
+        /// <remarks>
+        ///     # Create new order to complete a practice lesson
+        /// </remarks>
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> AddPracticeOrder([FromForm]AddPracticeOrderInput request)
@@ -32,7 +37,12 @@ namespace course_backend.Controllers
             return await _dispatcher.DispatchAsync(request);
         }
         
-        /* get many */
+        /// <summary>
+        ///     Get practices to review
+        /// </summary>
+        /// <remarks>
+        ///     get all practices for review
+        /// </remarks>
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetPracticeOrders([FromQuery]GetPracticesInput request)
@@ -40,16 +50,33 @@ namespace course_backend.Controllers
             return await _dispatcher.DispatchAsync(request);
         }
         
-        /* get by user id */
+        /// <summary>
+        ///     Get all practices orders for user by lesson
+        /// </summary>
+        /// <remarks>
+        ///     # Get all user's practice orders by lesson
+        ///     ### with param last returns last order for this lesson
+        ///
+        ///     ```
+        ///         {
+        ///             
+        ///         }
+        ///     ```
+        /// </remarks>
         [HttpGet("user/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetOneByUserId(GetOnePracticeInput request, [FromRoute]int id)
         {
-            request.UserId = id;
+            request.SetUserId(id);
             return await _dispatcher.DispatchAsync(request);
         }
         
-        /* get one */
+        /// <summary>
+        ///     Get info for practice order by id
+        /// </summary>
+        /// <remarks>
+        ///     # Get info for practice order by id
+        /// </remarks>
         [HttpGet("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetOneInfo([FromRoute]int id)
@@ -58,7 +85,12 @@ namespace course_backend.Controllers
             return await _dispatcher.DispatchAsync(request);
         }
         
-        /* resolve */
+        /// <summary>
+        ///     Resolve order
+        /// </summary>
+        /// <remarks>
+        ///     # Resolve order
+        /// </remarks>
         [HttpPut("resolve")]
         [AuthorizeByRole(UserRoles.Teacher, UserRoles.Admin)]
         public async Task<IActionResult> Resolve([FromBody]ResolvePracticeInput request)
@@ -66,7 +98,12 @@ namespace course_backend.Controllers
             return await _dispatcher.DispatchAsync(request);
         }
         
-        /* reject */
+        /// <summary>
+        ///     Reject order
+        /// </summary>
+        /// <remarks>
+        ///     # Reject order
+        /// </remarks>
         [HttpPut("reject")]
         [AuthorizeByRole(UserRoles.Teacher, UserRoles.Admin)]
         public async Task<IActionResult> Reject([FromBody]RejectPracticeInput request)
