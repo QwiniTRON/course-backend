@@ -29,16 +29,20 @@ namespace Domain.UseCases.Account.SignUp
 
         public async Task<IOutput> Handle(SignUpInput request, CancellationToken cancellationToken)
         {
-            var user = new Entity.User(request.Mail);
-            user.Nick = request.Nick;
-
+            var hasSameNick = await _context.Users
+                .AnyAsync(x => x.Nick == request.Nick, cancellationToken: cancellationToken);
+            if (hasSameNick)
+            {
+                return ActionOutput.Error("Пользователь с таким ником уже зарегистрирован");
+            }
+            
+            var user = new Entity.User(request.Mail) { Nick = request.Nick};
             var registerResult = await _userManager.CreateAsync(user);
-
             if (registerResult.Succeeded == false)
             {
                 return ActionOutput.Error("Такой пользователь уже есть");
             }
-
+            
             await _userManager.AddToRoleAsync(user, UserRoles.Participant.ToString());
             await _userManager.AddPasswordAsync(user, request.Password);
 
