@@ -6,6 +6,9 @@ using Domain.Abstractions.Outputs;
 using Domain.Abstractions.Services;
 using Domain.Data;
 using Domain.Entity;
+using Domain.Services;
+using Domain.UseCases.PracticeOrder.GetOne;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Domain.UseCases.PracticeOrder.Add
@@ -14,11 +17,15 @@ namespace Domain.UseCases.PracticeOrder.Add
     {
         private readonly IAppDbContext _context;
         private readonly IFileUploader _fileUploader;
+        private readonly IPracticeOrderProvider _practiceOrderProvider;
 
-        public AddPracticeOrderCase(IAppDbContext context, IFileUploader fileUploader)
+        public AddPracticeOrderCase(IAppDbContext context, 
+            IFileUploader fileUploader, 
+            IPracticeOrderProvider practiceOrderProvider)
         {
             _context = context;
             _fileUploader = fileUploader;
+            _practiceOrderProvider = practiceOrderProvider;
         }
         
 
@@ -45,6 +52,14 @@ namespace Domain.UseCases.PracticeOrder.Add
                 return ActionOutput.Error("Урок не практический");
             }
 
+            /* check last order */
+            var lastOrder = await _practiceOrderProvider.GetUserPracticeOrders(author.Id, lesson.Id);
+            if (lastOrder.FirstOrDefault()?.IsDone == false)
+            {
+                return ActionOutput.Error("Заявка уже оформлена");
+            }
+            
+            
             using var unit = _context.CreateUnitOfWork();
 
             var fileSaveResult = await _fileUploader.SaveFile(request.CodeFile);

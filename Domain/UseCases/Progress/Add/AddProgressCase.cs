@@ -35,6 +35,15 @@ namespace Domain.UseCases.Progress.Add
             {
                 return ActionOutput.Error("Урок не был найден");
             }
+
+            var HasEqualProgress = await _context.Progresses
+                .AnyAsync(x => x.UserId == user.Id && x.LessonId == lesson.Id, 
+                    cancellationToken: cancellationToken);
+
+            if (HasEqualProgress)
+            {
+                return ActionOutput.Error("Данный урок уже засчитан");
+            }
             
             var progress = new UserProgress(user, lesson);
 

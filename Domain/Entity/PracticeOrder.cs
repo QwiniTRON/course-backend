@@ -12,6 +12,7 @@ namespace Domain.Entity
 
         
         public string RejectReason { get; set; }
+        /* completion status */
         public bool IsDone { get; set; }
         public bool IsResolved { get; set; }
 

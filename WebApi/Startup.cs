@@ -38,6 +38,8 @@ namespace course_backend
             services.BuildFromAssambly(typeof(AppDbContext), Configuration, Env);
             /* build WebApi */
             services.BuildFromAssambly(typeof(Startup), Configuration, Env);
+            /* build domain */
+            services.BuildFromAssambly(typeof(DIExtensions), Configuration, Env);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

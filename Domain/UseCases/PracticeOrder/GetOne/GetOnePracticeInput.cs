@@ -7,6 +7,7 @@ namespace Domain.UseCases.PracticeOrder.GetOne
     public class GetOnePracticeInput: IUseCaseInput
     {
         public int UserId { get; set; }
+        public int LessonId { get; set; }
         public bool Last { get; set; }
     }
     
@@ -15,6 +16,7 @@ namespace Domain.UseCases.PracticeOrder.GetOne
         public GetOnePracticeInputValidator()
         {
             RuleFor(x => x.UserId).NotEmpty();
+            RuleFor(x => x.LessonId).NotEmpty();
         }   
     }
 }
