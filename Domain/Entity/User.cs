@@ -42,6 +42,7 @@ namespace Domain.Entity
         public List<Message> Messages { get; set; }
         public List<PracticeOrder> PracticeOrders { get; set; }
         public List<PracticeOrder> PracticeOrdersChecks { get; set; }
+        public List<SubjectSertificate> SubjectSertificates { get; set; }
 
 
         public bool IsStaff => Roles.Any(r => r == UserRoles.Admin || r == UserRoles.Teacher);

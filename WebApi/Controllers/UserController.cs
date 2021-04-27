@@ -54,6 +54,15 @@ namespace course_backend.Controllers
             return await _dispatcher.DispatchAsync(request);
         }
         
+        [HttpGet("current")]
+        [AuthorizeByRole(UserRoles.Admin, UserRoles.Participant, UserRoles.Teacher)]
+        public async Task<IActionResult> GetCurrentUesrInfo()
+        {
+            var request = new UserInfoInput();
+            request.UserId = (await _currentUserProvider.GetCurrentUser()).Id;
+            return await _dispatcher.DispatchAsync(request);
+        }
+        
         /* get user info */
         [HttpGet("{id}")]
         [AuthorizeByRole(UserRoles.Admin, UserRoles.Participant, UserRoles.Teacher)]
@@ -61,7 +70,7 @@ namespace course_backend.Controllers
         {
             return await _dispatcher.DispatchAsync(new UserInfoInput() {UserId = id});
         }
-        
+
         /* get users */
         [HttpGet]
         [AuthorizeByRole(UserRoles.Admin, UserRoles.Participant, UserRoles.Teacher)]

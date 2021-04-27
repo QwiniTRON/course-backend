@@ -5,6 +5,7 @@ using Domain.Abstractions.Mediatr;
 using Domain.Abstractions.Outputs;
 using Domain.Data;
 using Domain.Extensions;
+using Domain.Maps.Views;
 using Microsoft.EntityFrameworkCore;
 
 namespace Domain.UseCases.User.UserInfo
@@ -26,6 +27,7 @@ namespace Domain.UseCases.User.UserInfo
             var user = await _context.Users
                 .AsNoTracking()
                 .WithRoles()
+                .Include(x => x.SubjectSertificates)
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken: cancellationToken);
             
             if (user is null)
@@ -33,7 +35,7 @@ namespace Domain.UseCases.User.UserInfo
                 return ActionOutput.Error("Пользователь не был найден");
             }
 
-            return ActionOutput.SuccessData(_mapper.Map<UserInfoOutput>(user));
+            return ActionOutput.SuccessData(_mapper.Map<UserViewDetailed>(user));
         }
     }
 }
