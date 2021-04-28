@@ -1,8 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using course_backend.Implementations;
 using Domain.Abstractions.Services;
 using Domain.UseCases.Subject.AddSertificate;
 using Domain.UseCases.Subject.GetOne;
+using Domain.Views.Subject;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -45,6 +47,7 @@ namespace course_backend.Controllers
         /// </remarks>
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(typeof(List<SubjectDeteiledView>), 200)]
         public async Task<IActionResult> GetSubject([FromQuery]GetSubjectInfoInput request)
         {
             return await _dispatcher.DispatchAsync(request);

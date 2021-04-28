@@ -7,6 +7,7 @@ using AutoMapper;
 using Domain.Abstractions.Mediatr;
 using Domain.Abstractions.Outputs;
 using Domain.Data;
+using Domain.Extensions;
 using Domain.Maps.Views;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,12 +33,14 @@ namespace Domain.UseCases.User.GetUsers
             
             var users = await _context.Users
                 .AsNoTracking()
+                .WithRoles()
+                .Include(x => x.SubjectSertificates)
                 .Where(x => x.Mail.Contains(search) || x.Nick.Contains(search))
                 .Skip((page - 1) * limit)
                 .Take(limit)
                 .ToListAsync(cancellationToken: cancellationToken);
 
-            return ActionOutput.SuccessData(_mapper.Map<List<Entity.User>, List<UserView>>(users));
+            return ActionOutput.SuccessData(_mapper.Map<List<Entity.User>, List<UserViewDetailed>>(users));
         }
     }
 }

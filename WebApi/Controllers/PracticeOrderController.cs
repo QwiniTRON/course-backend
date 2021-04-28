@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using course_backend.Identity;
 using course_backend.Implementations;
 using Domain.Enums;
@@ -45,6 +46,7 @@ namespace course_backend.Controllers
         /// </remarks>
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(typeof(List<GetPracticesOutput>), 200)]
         public async Task<IActionResult> GetPracticeOrders([FromQuery]GetPracticesInput request)
         {
             return await _dispatcher.DispatchAsync(request);
@@ -59,6 +61,7 @@ namespace course_backend.Controllers
         /// </remarks>
         [HttpGet("user/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(typeof(List<GetOnePracticeOutput>), 200)]
         public async Task<IActionResult> GetOneByUserId(GetOnePracticeInput request, [FromRoute]int id)
         {
             request.UserId = id;
@@ -73,6 +76,7 @@ namespace course_backend.Controllers
         /// </remarks>
         [HttpGet("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(typeof(GetPracticeInfoOutput), 200)]
         public async Task<IActionResult> GetOneInfo([FromRoute]int id)
         {
             var request = new GetPracticeInfoInput() {PracticeId = id};

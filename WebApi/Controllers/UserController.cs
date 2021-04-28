@@ -1,8 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using course_backend.Identity;
 using course_backend.Implementations;
 using Domain.Abstractions.Services;
 using Domain.Enums;
+using Domain.Maps.Views;
 using Domain.UseCases.User.Bann;
 using Domain.UseCases.User.ChangeNick;
 using Domain.UseCases.User.ChangeRole;
@@ -53,7 +56,6 @@ namespace course_backend.Controllers
         [AuthorizeByRole(UserRoles.Admin)]
         public async Task<IActionResult> ChangeRole([FromBody] ChangeRoleInput request)
         {
-            request.User = await _currentUserProvider.GetCurrentUser();
             return await _dispatcher.DispatchAsync(request);
         }
 
@@ -80,6 +82,7 @@ namespace course_backend.Controllers
         /// </remarks>
         [HttpGet("current")]
         [AuthorizeByRole(UserRoles.Admin, UserRoles.Participant, UserRoles.Teacher)]
+        [ProducesResponseType(typeof(UserViewDetailed), 200)]
         public async Task<IActionResult> GetCurrentUesrInfo()
         {
             var request = new UserInfoInput();
@@ -95,6 +98,7 @@ namespace course_backend.Controllers
         /// </remarks>
         [HttpGet("{id}")]
         [AuthorizeByRole(UserRoles.Admin, UserRoles.Participant, UserRoles.Teacher)]
+        [ProducesResponseType(typeof(UserViewDetailed), 200)]
         public async Task<IActionResult> GetInfo([FromRoute]int id)
         {
             return await _dispatcher.DispatchAsync(new UserInfoInput() {UserId = id});
@@ -108,6 +112,8 @@ namespace course_backend.Controllers
         /// </remarks>
         [HttpGet]
         [AuthorizeByRole(UserRoles.Admin, UserRoles.Participant, UserRoles.Teacher)]
+        [ProducesResponseType(typeof(List<UserViewDetailed>), 200)]
+        [ProducesResponseType(typeof(String), 401)]
         public async Task<IActionResult> GetUsers([FromQuery]GetUsersInput request)
         {
             return await _dispatcher.DispatchAsync(request);

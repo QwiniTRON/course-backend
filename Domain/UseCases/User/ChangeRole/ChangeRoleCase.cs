@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Domain.Abstractions.Mediatr;
 using Domain.Abstractions.Outputs;
 using Domain.Data;
 using Domain.Enums;
+using Domain.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,7 +26,9 @@ namespace Domain.UseCases.User.ChangeRole
         
         public async Task<IOutput> Handle(ChangeRoleInput request, CancellationToken cancellationToken)
         {
-            Entity.User user = request.User;
+            var user = await _context.Users
+                .WithRoles()
+                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken: cancellationToken);
             var role = request.NewRole;
 
             if (user is null)

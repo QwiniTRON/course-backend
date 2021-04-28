@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using course_backend.Identity;
 using course_backend.Implementations;
 using Domain.Enums;
+using Domain.Maps.Views.Comment;
 using Domain.UseCases.Comment.Add;
 using Domain.UseCases.Comment.Delete;
 using Domain.UseCases.Comment.Edit;
@@ -74,6 +76,7 @@ namespace course_backend.Controllers
         /// </remarks>
         [HttpGet("lesson/{id}")]
         [AuthorizeByRole(UserRoles.Admin, UserRoles.Teacher)]
+        [ProducesResponseType(typeof(List<CommentView>), 200)]
         public async Task<IActionResult> GetByLesson([FromRoute]int id)
         {
             var request = new CommentByLessonInput {LessonId = id};

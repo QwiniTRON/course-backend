@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using course_backend.Identity;
@@ -57,6 +58,7 @@ namespace course_backend.Controllers
         /// </remarks>
         [HttpGet("current")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(typeof(List<ProgressesByIdOutput>), 200)]
         public async Task<IActionResult> GetProgressCurrent([FromQuery] ProgressesByIdInput request)
         {
             var currentUser = await _currentUserProvider.GetCurrentUser();
@@ -79,6 +81,7 @@ namespace course_backend.Controllers
         /// </remarks>
         [HttpGet("{userid}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(typeof(List<ProgressesByIdOutput>), 200)]
         public async Task<IActionResult> GetProgress([FromQuery] ProgressesByIdInput request, [FromRoute]int userid)
         {
             request.SetUserId(userid);

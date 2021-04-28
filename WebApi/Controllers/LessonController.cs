@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using course_backend.Implementations;
+using Domain.Maps.Views;
 using Domain.UseCases.Lesson;
 using Domain.UseCases.Lesson.GetOne;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -26,6 +28,7 @@ namespace course_backend.Controllers
         /// </remarks>
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(typeof(List<LessonView>), 200)]
         public async Task<IActionResult> GetLessons(GetLessonsInput request)
         {
             return await _dispatcher.DispatchAsync(request);
@@ -39,6 +42,7 @@ namespace course_backend.Controllers
         /// </remarks>
         [HttpGet("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(typeof(LessonDetailedView), 200)]
         public async Task<IActionResult> GetLessons(LessonGetOneInput request, [FromRoute]int id)
         {
             request.SetLessonId(id);
