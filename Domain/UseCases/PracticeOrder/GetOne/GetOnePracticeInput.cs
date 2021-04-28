@@ -1,16 +1,14 @@
-﻿using Domain.Abstractions.Mediatr;
-using Domain.Enums;
+﻿using System.Text.Json.Serialization;
+using Domain.Abstractions.Mediatr;
 using FluentValidation;
 
 namespace Domain.UseCases.PracticeOrder.GetOne
 {
     public class GetOnePracticeInput: IUseCaseInput
     {
-        public int UserId { get; private set; }
+        public int UserId { get; set; }
         public int LessonId { get; set; }
         public bool Last { get; set; }
-
-        public int SetUserId(int id) => UserId = id;
     }
     
     public class GetOnePracticeInputValidator: AbstractValidator<GetOnePracticeInput>

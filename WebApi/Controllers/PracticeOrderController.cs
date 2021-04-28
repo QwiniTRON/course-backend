@@ -56,18 +56,12 @@ namespace course_backend.Controllers
         /// <remarks>
         ///     # Get all user's practice orders by lesson
         ///     ### with param last returns last order for this lesson
-        ///
-        ///     ```
-        ///         {
-        ///             
-        ///         }
-        ///     ```
         /// </remarks>
         [HttpGet("user/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetOneByUserId(GetOnePracticeInput request, [FromRoute]int id)
         {
-            request.SetUserId(id);
+            request.UserId = id;
             return await _dispatcher.DispatchAsync(request);
         }
         
