@@ -11,6 +11,7 @@ namespace Infrastructure.Data.Configuration
             builder.HasKey(x => x.Id);
             builder.HasIndex(x => x.Mail).IsUnique();
             builder.Property(x => x.RegistrationDate).HasDefaultValueSql("NOW()");
+            builder.Property(x => x.Photo).HasDefaultValue("default.png");
             
             builder
                 .HasMany(u => u.RolesEntities)

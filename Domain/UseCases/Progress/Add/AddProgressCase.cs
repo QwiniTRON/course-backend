@@ -36,6 +36,11 @@ namespace Domain.UseCases.Progress.Add
                 return ActionOutput.Error("Урок не был найден");
             }
 
+            if (lesson.IsPractice)
+            {
+                return ActionOutput.Error("Урок практический");
+            }
+
             var HasEqualProgress = await _context.Progresses
                 .AnyAsync(x => x.UserId == user.Id && x.LessonId == lesson.Id, 
                     cancellationToken: cancellationToken);

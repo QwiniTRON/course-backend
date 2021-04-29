@@ -32,6 +32,7 @@ namespace Domain.Entity
         public string Mail { get; set; }
         public string Nick { get; set; }
         public string Password { get; set; }
+        public string Photo { get; set; }
         public bool IsBanned { get; set; }
         public DateTime RegistrationDate { get; set; }
         
