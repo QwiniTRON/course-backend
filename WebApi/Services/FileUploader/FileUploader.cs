@@ -42,9 +42,9 @@ namespace course_backend.Services
         }
 
         /* delete */
-        public async Task<IOperationResult<IFileUploaderOutput>> DeleteFile(string fileName,string path = null)
+        public async Task<IOperationResult<IFileUploaderOutput>> DeleteFile(string fileRelatedPath,string path = null)
         {
-            path ??=  Path.Combine(_appEnvironment.WebRootPath, FileFolderDefault, fileName);
+            path ??=  Path.Combine(_appEnvironment.WebRootPath, FileFolderDefault, fileRelatedPath);
             
             try
             {
@@ -55,7 +55,7 @@ namespace course_backend.Services
                 return OperationResult<FileUploaderOutput>.ErrorData(e.ToString(), e);
             }
             
-            return OperationResult<FileUploaderOutput>.SuccessData(new FileUploaderOutput(path, fileName));
+            return OperationResult<FileUploaderOutput>.SuccessData(new FileUploaderOutput(path, fileRelatedPath));
         }
 
         private string GetUniqFileName(string fileName) => DateTime.Now.ToFileTimeUtc().ToString() + "_" + fileName;

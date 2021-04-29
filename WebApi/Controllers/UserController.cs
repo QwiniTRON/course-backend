@@ -8,6 +8,8 @@ using Domain.Enums;
 using Domain.Maps.Views;
 using Domain.UseCases.User.Bann;
 using Domain.UseCases.User.ChangeNick;
+using Domain.UseCases.User.ChangePassword;
+using Domain.UseCases.User.ChangePhoto;
 using Domain.UseCases.User.ChangeRole;
 using Domain.UseCases.User.GetUsers;
 using Domain.UseCases.User.UserInfo;
@@ -42,6 +44,34 @@ namespace course_backend.Controllers
         [AuthorizeByRole(UserRoles.Admin)]
         public async Task<IActionResult> BanUser([FromBody] BannInput request)
         {
+            return await _dispatcher.DispatchAsync(request);
+        }
+        
+        /// <summary>
+        ///     Change password for current user
+        /// </summary>
+        /// <remarks>
+        ///     # Change password for current user
+        /// </remarks>
+        [HttpPut("password")]
+        [AuthorizeByRole(UserRoles.Admin, UserRoles.Participant, UserRoles.Teacher)]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordInput request)
+        {
+            request.UserId = (await _currentUserProvider.GetCurrentUser()).Id.ToString();
+            return await _dispatcher.DispatchAsync(request);
+        }
+        
+        /// <summary>
+        ///     Change photo for current user
+        /// </summary>
+        /// <remarks>
+        ///     # Change photo for current user
+        /// </remarks>
+        [HttpPut("photo")]
+        [AuthorizeByRole(UserRoles.Admin, UserRoles.Participant, UserRoles.Teacher)]
+        public async Task<IActionResult> ChangePhoto([FromBody] ChangePhotoInput request)
+        {
+            request.UserId = (await _currentUserProvider.GetCurrentUser()).Id;
             return await _dispatcher.DispatchAsync(request);
         }
         

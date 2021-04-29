@@ -64,8 +64,11 @@ namespace Infrastructure.Data
                 
                 /* init project data */
                 /* admin */
-                var mainAdmin = new User(adminConfig.Mail);
-                mainAdmin.Nick = adminConfig.Nick;
+                var mainAdmin = new User(adminConfig.Mail)
+                {
+                    Nick = adminConfig.Nick,
+                    Photo = adminConfig.Photo
+                };
 
                 var createResult = userManager.CreateAsync(user:mainAdmin).GetAwaiter().GetResult();
                 

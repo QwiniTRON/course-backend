@@ -63,6 +63,7 @@ namespace Domain.UseCases.Account.SignUp
                 var fileEntity = new AppFile(request.UserPhoto.FileName, filePath, filePathRelated);
                 userPhotoPath = filePathRelated;
                 await _context.AppFiles.AddAsync(fileEntity, cancellationToken);
+                user.UserPhoto = fileEntity;
             }
 
             user.Photo = userPhotoPath;

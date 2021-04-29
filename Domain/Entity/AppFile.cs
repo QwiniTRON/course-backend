@@ -23,6 +23,7 @@ namespace Domain.Entity
 
         public List<Message> Messages { get; set; }
         public List<PracticeOrder> PracticeOrders { get; set; }
+        public List<User> Users { get; set; }
         
         protected AppFile(string fullPath)
         {
