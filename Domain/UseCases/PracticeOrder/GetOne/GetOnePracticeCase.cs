@@ -35,6 +35,7 @@ namespace Domain.UseCases.PracticeOrder.GetOne
 
             var practices = await _context.PracticeOrders
                 .Include(x => x.Author)
+                .Include(x => x.Teacher)
                 .Where(x => x.Author.Id == user.Id && x.LessonId == request.LessonId)
                 .OrderByDescending(x => x.CreatedDate)
                 .ToListAsync(cancellationToken: cancellationToken);

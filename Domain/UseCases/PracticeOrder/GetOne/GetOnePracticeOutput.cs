@@ -13,6 +13,7 @@ namespace Domain.UseCases.PracticeOrder.GetOne
         public bool IsResolved { get; set; }
 
         public UserView Author { get; set; }
+        public UserView Teacher { get; set; }
 
         public GetOnePracticeOutput() {}
     }

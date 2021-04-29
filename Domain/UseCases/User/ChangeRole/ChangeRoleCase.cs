@@ -16,6 +16,7 @@ namespace Domain.UseCases.User.ChangeRole
     {
         private readonly IAppDbContext _context;
         private readonly UserManager<Entity.User> _userManager;
+        private readonly RoleManager<Entity.User> _roleManager;
 
         public ChangeRoleCase(IAppDbContext context, UserManager<Entity.User> userManager)
         {
@@ -26,10 +27,8 @@ namespace Domain.UseCases.User.ChangeRole
         
         public async Task<IOutput> Handle(ChangeRoleInput request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users
-                .WithRoles()
-                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken: cancellationToken);
-            var role = request.NewRole;
+            var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+            var newRole = request.NewRole;
 
             if (user is null)
             {
@@ -37,11 +36,8 @@ namespace Domain.UseCases.User.ChangeRole
             }
 
             var userRoles = await _userManager.GetRolesAsync(user);
-            
-            await _userManager.RemoveFromRolesAsync(user, userRoles);
-            await _userManager.AddToRoleAsync(user, Enum.GetName(typeof(UserRoles), role));
-
-            await _context.SaveChangesAsync(cancellationToken);
+            var addResult = await _userManager.AddToRoleAsync(user, Enum.GetName(newRole));
+            var removeResult = await _userManager.RemoveFromRolesAsync(user, userRoles);
 
             return ActionOutput.Success;
         }

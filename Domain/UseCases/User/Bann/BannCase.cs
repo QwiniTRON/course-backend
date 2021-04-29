@@ -27,7 +27,7 @@ namespace Domain.UseCases.User.Bann
                 return ActionOutput.Error("User wasn't found");
             }
 
-            user.IsBanned = true;
+            user.IsBanned = !user.IsBanned;
 
             await _context.SaveChangesAsync(cancellationToken);
             

@@ -27,9 +27,9 @@ namespace course_backend.Controllers
             _dispatcher = dispatcher;
             _currentUserProvider = currentUserProvider;
         }
-        
+
         /// <summary>
-        ///     Create a new mark that lesson is done
+        ///     Create a new mark that lesson is done for the current user
         /// </summary>
         /// <remarks>
         ///     # Create a new mark that lesson is done

@@ -1,22 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IO;
 using course_backend.Abstractions.DI;
-using Domain.Data;
 using Infrastructure.Data;
-using Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 
 namespace course_backend
 {
@@ -52,6 +43,10 @@ namespace course_backend
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "course_backend v1"));
             }
 
+            var defaultFileFolder = Configuration.GetSection("Static:DefaultFileFolder").Value;
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -60,6 +55,23 @@ namespace course_backend
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            
+            app.MapWhen(route =>
+            {
+                return route.Request.Path.StartsWithSegments("/swagger") == false;
+            }, builder =>
+            {
+                builder.UseStaticFiles(new StaticFileOptions()
+                {
+                    FileProvider = new PhysicalFileProvider(
+                        Path.Combine(env.WebRootPath, defaultFileFolder))
+                });
+                builder.UseSpa(config =>
+                {
+                    config.Options.DefaultPage = "/Frontend/index.html";
+                    config.Options.SourcePath = "wwwroot";
+                });
+            });
         }
     }
 }

@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using course_backend.Identity;
 using course_backend.Implementations;
+using Domain.Abstractions.Outputs;
+using Domain.Abstractions.Services;
 using Domain.Enums;
 using Domain.UseCases.PracticeOrder.Add;
 using Domain.UseCases.PracticeOrder.GetMany;
@@ -19,22 +21,27 @@ namespace course_backend.Controllers
     public class PracticeOrderController: Controller
     {
         private readonly IUseCaseDispatcher _dispatcher;
+        private readonly ICurrentUserProvider _currentUserProvider;
 
-        public PracticeOrderController(IUseCaseDispatcher dispatcher)
+        public PracticeOrderController(IUseCaseDispatcher dispatcher, ICurrentUserProvider currentUserProvider)
         {
             _dispatcher = dispatcher;
+            _currentUserProvider = currentUserProvider;
         }
 
         /// <summary>
-        ///     Add order to complete a practice lesson
+        ///     Add order to complete a practice lesson for current user
         /// </summary>
         /// <remarks>
-        ///     # Create new order to complete a practice lesson
+        ///     # Create new order to complete a practice lesson for current user
         /// </remarks>
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> AddPracticeOrder([FromForm]AddPracticeOrderInput request)
         {
+            var currentUser = await _currentUserProvider.GetCurrentUser();
+            if (currentUser is null) return Json(ActionOutput.Error("Пользователь не найден")); 
+            request.UserId = currentUser.Id;
             return await _dispatcher.DispatchAsync(request);
         }
         
@@ -88,11 +95,15 @@ namespace course_backend.Controllers
         /// </summary>
         /// <remarks>
         ///     # Resolve order
+        ///     ## teacher is current user
         /// </remarks>
         [HttpPut("resolve")]
         [AuthorizeByRole(UserRoles.Teacher, UserRoles.Admin)]
         public async Task<IActionResult> Resolve([FromBody]ResolvePracticeInput request)
         {
+            var currentUser = await _currentUserProvider.GetCurrentUser();
+            if (currentUser is null) return Json(ActionOutput.Error("Пользователь не найден")); 
+            request.TeacherId = currentUser.Id;
             return await _dispatcher.DispatchAsync(request);
         }
         
@@ -101,11 +112,15 @@ namespace course_backend.Controllers
         /// </summary>
         /// <remarks>
         ///     # Reject order
+        ///     ## teacher is current user
         /// </remarks>
         [HttpPut("reject")]
         [AuthorizeByRole(UserRoles.Teacher, UserRoles.Admin)]
         public async Task<IActionResult> Reject([FromBody]RejectPracticeInput request)
         {
+            var currentUser = await _currentUserProvider.GetCurrentUser();
+            if (currentUser is null) return Json(ActionOutput.Error("Пользователь не найден")); 
+            request.TeacherId = currentUser.Id;
             return await _dispatcher.DispatchAsync(request);
         }
     }

@@ -10,7 +10,7 @@ namespace course_backend.Services
 {
     public class FileUploader : IFileUploader
     {
-        public string FileFolderDefault { get; private set; } = "/files/";
+        public string FileFolderDefault { get; private set; } = "files";
         
         private IWebHostEnvironment _appEnvironment;
 
@@ -23,7 +23,7 @@ namespace course_backend.Services
         public async Task<IOperationResult<IFileUploaderOutput>> SaveFile(IFormFile file, string path = null)
         {
             string fileUniqName =  GetUniqFileName(file.FileName);
-            path ??=  _appEnvironment.WebRootPath + FileFolderDefault + fileUniqName;
+            path ??=  Path.Combine(_appEnvironment.WebRootPath, FileFolderDefault, fileUniqName);
 
             try
             {
@@ -38,13 +38,13 @@ namespace course_backend.Services
             }
             
             return OperationResult<FileUploaderOutput>
-                .SuccessData(new FileUploaderOutput(path, FileFolderDefault + fileUniqName));
+                .SuccessData(new FileUploaderOutput(path, fileUniqName));
         }
 
         /* delete */
         public async Task<IOperationResult<IFileUploaderOutput>> DeleteFile(string fileName,string path = null)
         {
-            path ??=  _appEnvironment.WebRootPath + FileFolderDefault + fileName;
+            path ??=  Path.Combine(_appEnvironment.WebRootPath, FileFolderDefault, fileName);
             
             try
             {
@@ -55,7 +55,7 @@ namespace course_backend.Services
                 return OperationResult<FileUploaderOutput>.ErrorData(e.ToString(), e);
             }
             
-            return OperationResult<FileUploaderOutput>.SuccessData(new FileUploaderOutput(path, path));
+            return OperationResult<FileUploaderOutput>.SuccessData(new FileUploaderOutput(path, fileName));
         }
 
         private string GetUniqFileName(string fileName) => DateTime.Now.ToFileTimeUtc().ToString() + "_" + fileName;
