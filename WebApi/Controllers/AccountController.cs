@@ -39,7 +39,7 @@ namespace course_backend.Controllers
         ///     ## Response: token to authenticate
         /// </remarks>
         [HttpPost("signup")]
-        public async Task<IActionResult> SignUp([FromBody]SignUpInput request)
+        public async Task<IActionResult> SignUp([FromForm]SignUpInput request)
         {
             return await _dispatcher.DispatchAsync(request);
         }
