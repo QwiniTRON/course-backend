@@ -11,6 +11,7 @@ namespace Domain.Maps.Views
         public List<UserRoles> Roles { get; set; }
         public string Mail { get; set; }
         public bool IsBanned { get; set; }
+        public string Photo { get; set; }
         
         public List<SubjectSertificateView> SubjectSertificates { get; set; }
         
