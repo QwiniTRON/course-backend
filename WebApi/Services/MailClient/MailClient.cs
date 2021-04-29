@@ -27,26 +27,26 @@ namespace course_backend.Services.MailClient
         /// <summary>
         ///     Send mail to destination with configured message
         ///
-        ///     Configure message like this:
+        ///     Configure a message like this:
         ///     m.Subject = "Theme for letter";
         ///     m.Body = "<h2>Html content</h2>";
         /// </summary>
         /// <param name="fromAdress">Address initiator</param>
         /// <param name="toAdress">receiver for this letter</param>
         /// <param name="messageBuilder">builder delegate to configure message</param>
-        public async Task SendMail(string fromAdress, string toAdress, Action<MailMessage> messageBuilder)
+        public async Task SendMail(string toAdress, Action<MailMessage> messageBuilder)
         {
             try
             {
                 // отправитель - устанавливаем адрес и отображаемое в письме имя
-                MailAddress from = new MailAddress(fromAdress, "CourseBackendMailClient");
+                MailAddress from = new MailAddress(CredentialMail, "CourseBackendMailClient");
                 // кому отправляем
                 MailAddress to = new MailAddress(toAdress);
                 // создаем объект сообщения
                 MailMessage m = new MailMessage(from, to);
                 messageBuilder(m);
                 m.IsBodyHtml = true;
-                
+
                 // адрес smtp-сервера и порт, с которого будем отправлять письмо
                 SmtpClient smtp = new SmtpClient(SMTPProvider, SMTPPort);
                 // логин и пароль
@@ -54,7 +54,9 @@ namespace course_backend.Services.MailClient
                 smtp.EnableSsl = true;
                 await smtp.SendMailAsync(m);
             }
-            catch (Exception e){}
+            catch (Exception e)
+            {
+            }
         }
     }
 }

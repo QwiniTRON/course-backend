@@ -6,6 +6,6 @@ namespace Domain.Abstractions.Services.IMailClient
 {
     public interface IMailClient
     {
-        Task SendMail(string from, string to, Action<MailMessage> messageBuilder);
+        Task SendMail(string to, Action<MailMessage> messageBuilder);
     }
 }
