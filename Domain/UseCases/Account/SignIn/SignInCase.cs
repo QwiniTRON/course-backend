@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Domain.Abstractions.Mediatr;
 using Domain.Abstractions.Outputs;
 using Domain.Abstractions.Services;
+using Domain.Abstractions.Services.IMailClient;
 using Domain.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
