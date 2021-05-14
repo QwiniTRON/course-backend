@@ -5,15 +5,19 @@ namespace Domain.Entity
 {
     public class Lesson: IEntity
     {
-        public Lesson(string name, bool isPractice, Subject subject)
+        public Lesson(string name, bool isPractice, Subject subject, int index, string description)
         {
             Name = name;
             IsPractice = isPractice;
             Subject = subject;
+            Index = index;
+            Description = description;
         }
 
         public int Id { get; set; }
+        public int Index { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
         public bool IsPractice { get; set; }
         
         public Subject Subject { get; set; }
@@ -23,6 +27,10 @@ namespace Domain.Entity
         public List<Comment> Comments { get; set; }
         public List<PracticeOrder> PracticeOrders { get; set; }
 
-        protected Lesson() {}
+        protected Lesson(int index, string description)
+        {
+            Index = index;
+            Description = description;
+        }
     }
 }
