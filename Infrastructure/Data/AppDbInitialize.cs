@@ -87,12 +87,12 @@ namespace Infrastructure.Data
                 /* lessons */
                 List<Lesson> lessons = new List<Lesson>()
                 {
-                    new Lesson("Знакомство с библиотекой", false, reactSubject, 1, "Ознакомительный урок 1", ""),
-                    new Lesson("Основные понятия", false, reactSubject, 2, "Ознакомительный урок 2", ""),
-                    new Lesson("Что такое код", false, reactSubject, 3, "Ознакомительный урок 3 ", ""),
-                    new Lesson("Примеры кода", true, reactSubject, 4, "Ознакомительный урок 4", ""),
-                    new Lesson("Компанент", false, reactSubject, 5, "Ознакомительный урок 5", ""),
-                    new Lesson("Подходы к разработке", false, reactSubject, 6, "Ознакомительный урок 6", "")
+                    new Lesson("Знакомство с библиотекой", false, reactSubject, 1, "Ознакомительный урок 1", "# lesson 1"),
+                    new Lesson("Основные понятия", false, reactSubject, 2, "Ознакомительный урок 2", "# lesson 2"),
+                    new Lesson("Что такое код", false, reactSubject, 3, "Ознакомительный урок 3 ", "# lesson 3"),
+                    new Lesson("Примеры кода", true, reactSubject, 4, "Ознакомительный урок 4", "# lesson 4"),
+                    new Lesson("Компанент", false, reactSubject, 5, "Ознакомительный урок 5", "# lesson 5"),
+                    new Lesson("Подходы к разработке", false, reactSubject, 6, "Ознакомительный урок 6", "# lesson 6")
                 };
                 
                 context.Lessons.AddRange(lessons);

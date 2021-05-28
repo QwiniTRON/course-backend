@@ -69,7 +69,7 @@ namespace course_backend.Controllers
         /// </remarks>
         [HttpPut("photo")]
         [AuthorizeByRole(UserRoles.Admin, UserRoles.Participant, UserRoles.Teacher)]
-        public async Task<IActionResult> ChangePhoto([FromBody] ChangePhotoInput request)
+        public async Task<IActionResult> ChangePhoto([FromForm] ChangePhotoInput request)
         {
             request.UserId = (await _currentUserProvider.GetCurrentUser()).Id;
             return await _dispatcher.DispatchAsync(request);

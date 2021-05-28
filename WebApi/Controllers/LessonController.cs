@@ -1,8 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using course_backend.Identity;
 using course_backend.Implementations;
+using Domain.Enums;
 using Domain.Maps.Views;
 using Domain.UseCases.Lesson;
+using Domain.UseCases.Lesson.AddLesson;
+using Domain.UseCases.Lesson.DeleteLesson;
+using Domain.UseCases.Lesson.EditLesson;
 using Domain.UseCases.Lesson.GetOne;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -46,6 +51,29 @@ namespace course_backend.Controllers
         public async Task<IActionResult> GetLessons(LessonGetOneInput request, [FromRoute]int id)
         {
             request.SetLessonId(id);
+            return await _dispatcher.DispatchAsync(request);
+        } 
+        
+        [HttpDelete("{id}")]
+        [AuthorizeByRole(UserRoles.Admin)]
+        public async Task<IActionResult> DeleteLesson(DeleteLessonInput request, [FromRoute]int id)
+        {
+            request.LessonId = id;
+            return await _dispatcher.DispatchAsync(request);
+        } 
+        
+        [HttpPut("{id}")]
+        [AuthorizeByRole(UserRoles.Admin, UserRoles.Teacher)]
+        public async Task<IActionResult> EditLesson([FromBody]EditLessonInput request, [FromRoute]int id)
+        {
+            request.LessonId = id;
+            return await _dispatcher.DispatchAsync(request);
+        } 
+        
+        [HttpPost]
+        [AuthorizeByRole(UserRoles.Admin, UserRoles.Teacher)]
+        public async Task<IActionResult> CreateLesson([FromBody]AddLessonInput request)
+        {
             return await _dispatcher.DispatchAsync(request);
         } 
     }

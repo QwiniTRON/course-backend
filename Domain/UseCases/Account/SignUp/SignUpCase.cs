@@ -47,6 +47,8 @@ namespace Domain.UseCases.Account.SignUp
             {
                 return ActionOutput.Error("Такой пользователь уже есть");
             }
+
+            await _context.SaveChangesAsync(cancellationToken);
             
             using var unit = _context.CreateUnitOfWork();
 
@@ -60,10 +62,12 @@ namespace Domain.UseCases.Account.SignUp
                 }
                 var filePath = fileSaveResult.Data.OperatedFilePath;
                 var filePathRelated = fileSaveResult.Data.OperatedFileRelatedPath;
-                var fileEntity = new AppFile(request.UserPhoto.FileName, filePath, filePathRelated);
+                var fileEntity = new AppFile(request.UserPhoto.FileName, filePath, filePathRelated)
+                {
+                    UserId = user.Id,
+                };
                 userPhotoPath = filePathRelated;
-                await _context.AppFiles.AddAsync(fileEntity, cancellationToken);
-                user.UserPhoto = fileEntity;
+                _context.AppFiles.Add(fileEntity);
             }
 
             user.Photo = userPhotoPath;

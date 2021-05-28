@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Domain.Abstractions.Mediatr;
@@ -7,6 +8,7 @@ using Domain.Abstractions.Services;
 using Domain.Data;
 using Domain.Entity;
 using Microsoft.EntityFrameworkCore;
+using Z.EntityFramework.Plus;
 
 namespace Domain.UseCases.User.ChangePhoto
 {
@@ -52,15 +54,24 @@ namespace Domain.UseCases.User.ChangePhoto
             }
             var filePath = fileSaveResult.Data.OperatedFilePath;
             var filePathRelated = fileSaveResult.Data.OperatedFileRelatedPath;
-            var fileEntity = new AppFile(request.NewPhoto.FileName, filePath, filePathRelated);
+            var fileEntity = new AppFile(request.NewPhoto.FileName, filePath, filePathRelated)
+            {
+                UserId = user.Id
+            };
+            var items = await _context.AppFiles.Where(x => x.UserId == user.Id).ToListAsync(cancellationToken);
+            
+            _context.AppFiles.RemoveRange(items);
+
+            await _context.SaveChangesAsync(cancellationToken);
+            
             await _context.AppFiles.AddAsync(fileEntity, cancellationToken);
-            user.UserPhoto = fileEntity;
+
             user.Photo = filePathRelated;
             
             await _context.SaveChangesAsync(cancellationToken);
             await unit.Apply();
             
-            return ActionOutput.Success;
+            return ActionOutput.SuccessData(user.Photo);
         }
     }
 }

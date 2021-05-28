@@ -21,9 +21,11 @@ namespace Domain.Entity
         /* full path relative main catalog */
         public string Path { get; set; }
 
+        public int? UserId { get; set; }
+        public User User { get; set; }
+
         public List<Message> Messages { get; set; }
         public List<PracticeOrder> PracticeOrders { get; set; }
-        public List<User> Users { get; set; }
         
         protected AppFile(string fullPath)
         {

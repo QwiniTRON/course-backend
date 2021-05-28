@@ -19,9 +19,10 @@ namespace Infrastructure.Data.Configuration
                 .HasForeignKey(r => r.UserId)
                 .IsRequired();
 
-            builder.HasOne<AppFile>(x => x.UserPhoto)
-                .WithMany(x => x.Users)
-                .HasForeignKey(x => x.UserPhotoId);
+            builder
+                .HasMany(x => x.UserPhoto)
+                .WithOne(x => x.User)
+                .HasForeignKey(x => x.UserId);
         }
     }
 }

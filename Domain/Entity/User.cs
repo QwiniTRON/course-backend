@@ -33,7 +33,7 @@ namespace Domain.Entity
         public string Nick { get; set; }
         public string Password { get; set; }
         public string Photo { get; set; }
-        public AppFile UserPhoto { get; set; }
+        public List<AppFile> UserPhoto { get; set; } = new List<AppFile>();
         public int? UserPhotoId { get; set; }
         public bool IsBanned { get; set; }
         public DateTime RegistrationDate { get; set; }
