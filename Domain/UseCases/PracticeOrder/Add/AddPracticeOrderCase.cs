@@ -32,7 +32,7 @@ namespace Domain.UseCases.PracticeOrder.Add
         public async Task<IOutput> Handle(AddPracticeOrderInput request, CancellationToken cancellationToken)
         {
             var author = await _context.Users
-                .Include(x => x.PracticeOrders)
+                .Include(x => x.UserProgresses)
                     .ThenInclude(x => x.Lesson)
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken: cancellationToken);
 
@@ -56,7 +56,7 @@ namespace Domain.UseCases.PracticeOrder.Add
 
             if (lesson.Index > 1)
             {
-                var hasLastLesson = author.PracticeOrders.Any(x => x.Lesson.Index == lesson.Index-1);
+                var hasLastLesson = author.UserProgresses.Any(x => x.Lesson.Index == lesson.Index-1);
                 if (hasLastLesson == false)
                 {
                     return ActionOutput.Error("Прошлый урок не пройден");

@@ -1,10 +1,13 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Domain.Abstractions.Mediatr;
 using Domain.Abstractions.Outputs;
 using Domain.Data;
 using Domain.Entity;
+using Domain.Views.UserProgress;
 using Microsoft.EntityFrameworkCore;
 
 namespace Domain.UseCases.Progress.Add
@@ -12,10 +15,12 @@ namespace Domain.UseCases.Progress.Add
     public class AddProgressCase: IUseCase<AddProgressInput>
     {
         private IAppDbContext _context;
+        private IMapper _mapper;
 
-        public AddProgressCase(IAppDbContext context)
+        public AddProgressCase(IAppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         
 
@@ -41,11 +46,11 @@ namespace Domain.UseCases.Progress.Add
                 return ActionOutput.Error("Урок практический");
             }
 
-            var HasEqualProgress = await _context.Progresses
+            var hasEqualProgress = await _context.Progresses
                 .AnyAsync(x => x.UserId == user.Id && x.LessonId == lesson.Id, 
                     cancellationToken: cancellationToken);
 
-            if (HasEqualProgress)
+            if (hasEqualProgress)
             {
                 return ActionOutput.Error("Данный урок уже засчитан");
             }
@@ -55,8 +60,11 @@ namespace Domain.UseCases.Progress.Add
             await _context.Progresses.AddAsync(progress, cancellationToken);
 
             await _context.SaveChangesAsync(cancellationToken);
+
+            var newUserProgresses =
+                await _context.Progresses.Where(x => x.UserId == user.Id).ToListAsync(cancellationToken);
             
-            return ActionOutput.SuccessData(new {progressId = progress.Id});
+            return ActionOutput.SuccessData(_mapper.Map<List<UserProgressView>>(newUserProgresses));
         }
     }
 }

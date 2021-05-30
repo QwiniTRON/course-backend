@@ -9,6 +9,7 @@ using Domain.Abstractions.Services;
 using Domain.UseCases.Progress.Add;
 using Domain.UseCases.Progress.ProgressesById;
 using Domain.UseCases.User.UserInfo;
+using Domain.Views.UserProgress;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -36,6 +37,7 @@ namespace course_backend.Controllers
         /// </remarks>
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(typeof(List<UserProgressView>), 200)]
         public async Task<IActionResult> AddProgress([FromBody]AddProgressInput request)
         {
             var currentUser = await _currentUserProvider.GetCurrentUser();

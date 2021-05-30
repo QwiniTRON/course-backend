@@ -39,6 +39,11 @@ namespace Domain.UseCases.PracticeOrder.Reject
                 return ActionOutput.Error("Решение уже принято");
             }
 
+            if (practice.AuthorId == request.TeacherId)
+            {
+                return ActionOutput.Error("Нельзя принять практику у себя");
+            }
+
             practice.IsDone = true;
             practice.RejectReason = request.Description;
             practice.IsResolved = false;

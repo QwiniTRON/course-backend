@@ -35,6 +35,11 @@ namespace Domain.UseCases.PracticeOrder.Resolve
             {
                 return ActionOutput.Error("Решение уже принято");
             }
+            
+            if (practice.AuthorId == request.TeacherId)
+            {
+                return ActionOutput.Error("Нельзя принять практику у себя");
+            }
 
             practice.IsDone = true;
             practice.IsResolved = true;

@@ -28,6 +28,8 @@ namespace Domain.UseCases.User.UserInfo
                 .AsNoTracking()
                 .WithRoles()
                 .Include(x => x.SubjectSertificates)
+                .Include(x => x.UserProgresses)
+                .Include(x => x.PracticeOrders)
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken: cancellationToken);
             
             if (user is null)

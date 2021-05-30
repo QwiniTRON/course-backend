@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Domain.Maps.Views;
 
 namespace Domain.Maps
 {
@@ -6,6 +7,8 @@ namespace Domain.Maps
     {
         public LessonMapper()
         {
+            CreateMap<Entity.Lesson, LessonView>();
+            CreateMap<Entity.Lesson, LessonDetailedView>();
         }
     }
 }

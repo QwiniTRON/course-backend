@@ -3,6 +3,7 @@ using Domain.UseCases.PracticeOrder.GetMany;
 using Domain.UseCases.PracticeOrder.GetOne;
 using Domain.UseCases.PracticeOrder.OneInfo;
 using Domain.UseCases.User.UserInfo;
+using Domain.Views.PracticeOrder;
 
 namespace Domain.Maps
 {
@@ -35,6 +36,8 @@ namespace Domain.Maps
                     x.MapFrom(y => y.Teacher))
                 .ForMember("CodePath", x =>
                     x.MapFrom(y => y.PracticeContent.Path));
+
+            CreateMap<Entity.PracticeOrder, PracticeOrderView>();
         }
     }
 }

@@ -6,11 +6,13 @@ using Domain.Abstractions.Outputs;
 using Domain.Abstractions.Services;
 using Domain.Enums;
 using Domain.UseCases.PracticeOrder.Add;
+using Domain.UseCases.PracticeOrder.CurrentUserPractices;
 using Domain.UseCases.PracticeOrder.GetMany;
 using Domain.UseCases.PracticeOrder.GetOne;
 using Domain.UseCases.PracticeOrder.OneInfo;
 using Domain.UseCases.PracticeOrder.Reject;
 using Domain.UseCases.PracticeOrder.Resolve;
+using Domain.Views.PracticeOrder;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -72,6 +74,18 @@ namespace course_backend.Controllers
         public async Task<IActionResult> GetOneByUserId(GetOnePracticeInput request, [FromRoute]int id)
         {
             request.UserId = id;
+            return await _dispatcher.DispatchAsync(request);
+        }
+        
+        [HttpGet("current")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ProducesResponseType(typeof(List<PracticeOrderView>), 200)]
+        public async Task<IActionResult> GetAllPracticesForCurrentUser(CurrentUserPracticesInput request)
+        {
+            var currentUser = await _currentUserProvider.GetCurrentUser();
+            if (currentUser is null) return Json(ActionOutput.Error("Пользователь не найден")); 
+            request.UserId = currentUser.Id;
+            
             return await _dispatcher.DispatchAsync(request);
         }
         

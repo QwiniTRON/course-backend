@@ -28,7 +28,6 @@ namespace Domain.UseCases.Lesson.EditLesson
             lesson.Content = request.Content;
             lesson.Description = request.Description;
             lesson.Index = request.Index;
-            lesson.IsPractice = request.IsPractice;
 
             await _context.SaveChangesAsync(cancellationToken);
             
