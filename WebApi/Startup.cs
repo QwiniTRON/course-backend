@@ -45,6 +45,7 @@ namespace course_backend
 
             var defaultFileFolder = Configuration.GetSection("Static:DefaultFileFolder").Value;
             var staticFileRoute = Configuration.GetSection("Static:StaticFileRoute").Value;
+            var staticAppAssets = "/appstatic";
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions()
@@ -52,6 +53,12 @@ namespace course_backend
                 FileProvider = new PhysicalFileProvider(
                     Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\files")),
                 RequestPath = new PathString(staticFileRoute)
+            });
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\appstatic")),
+                RequestPath = new PathString(staticAppAssets)
             });
             
             app.UseHttpsRedirection();

@@ -53,7 +53,7 @@ namespace Domain.UseCases.PracticeOrder.Reject
 
             await _context.SaveChangesAsync(cancellationToken);
             
-            _mailClient.SendMail("barabanzz871@gmail.com", message =>
+            _mailClient.SendMail(practice.Author.Mail, message =>
             {
                 message.Subject = $"Практический урок {practice.Lesson.Name} не пройден.";
                 message.Body = _templateCreator.GetRejectLetter(practice.Lesson.Name, request.Description);

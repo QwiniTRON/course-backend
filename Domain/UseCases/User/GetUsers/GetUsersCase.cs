@@ -9,6 +9,7 @@ using Domain.Abstractions.Outputs;
 using Domain.Data;
 using Domain.Extensions;
 using Domain.Maps.Views;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Domain.UseCases.User.GetUsers
@@ -17,11 +18,13 @@ namespace Domain.UseCases.User.GetUsers
     {
         private readonly IAppDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public GetUsersCase(IAppDbContext context, IMapper mapper)
+        public GetUsersCase(IAppDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
         }
 
 
@@ -30,6 +33,15 @@ namespace Domain.UseCases.User.GetUsers
             var search = request.Search ?? "";
             var page = request.Page ?? 1;
             var limit = request.Limit ?? 16;
+            
+            var usersCount = await _context.Users
+                .AsNoTracking()
+                .WithRoles()
+                .Include(x => x.SubjectSertificates)
+                .Where(x => x.Mail.Contains(search) || x.Nick.Contains(search))
+                .CountAsync(cancellationToken: cancellationToken);
+            
+            _httpContextAccessor.HttpContext.Response.Headers.Add("X-Total-Count", usersCount.ToString());
             
             var users = await _context.Users
                 .AsNoTracking()

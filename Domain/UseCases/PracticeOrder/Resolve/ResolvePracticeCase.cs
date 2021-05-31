@@ -5,6 +5,8 @@ using Domain.Abstractions.Outputs;
 using Domain.Abstractions.Services.IMailClient;
 using Domain.Abstractions.Services.ITemplateCreator;
 using Domain.Data;
+using Domain.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Domain.UseCases.PracticeOrder.Resolve
 {
@@ -24,7 +26,10 @@ namespace Domain.UseCases.PracticeOrder.Resolve
         
         public async Task<IOutput> Handle(ResolvePracticeInput request, CancellationToken cancellationToken)
         {
-            var practice = await _context.PracticeOrders.FindAsync(request.PracticeId);
+            var practice = await _context.PracticeOrders
+                .Include(x => x.Author)
+                .Include(x => x.Lesson)
+                .FirstOrDefaultAsync(x => x.Id == request.PracticeId, cancellationToken: cancellationToken);
 
             if (practice is null)
             {
@@ -49,7 +54,11 @@ namespace Domain.UseCases.PracticeOrder.Resolve
 
             await _context.SaveChangesAsync(cancellationToken);
             
-            _mailClient.SendMail("barabanzz871@gmail.com", message =>
+            var progress = new UserProgress(practice.Author, practice.Lesson);
+            await _context.Progresses.AddAsync(progress, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            _mailClient.SendMail(practice.Author.Mail, message =>
             {
                 message.Subject = $"Практический урок {practice.Lesson.Name} пройден.";
                 message.Body = _templateCreator.GetResolveLetter(practice.Lesson.Name);

@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Domain.Abstractions.Mediatr;
 using Domain.Abstractions.Outputs;
+using Domain.Abstractions.Services;
 using Domain.Data;
 using Domain.Enums;
 using Domain.Extensions;
@@ -17,23 +18,32 @@ namespace Domain.UseCases.User.ChangeRole
         private readonly IAppDbContext _context;
         private readonly UserManager<Entity.User> _userManager;
         private readonly RoleManager<Entity.User> _roleManager;
+        private readonly ICurrentUserProvider _currentUserProvider;
 
-        public ChangeRoleCase(IAppDbContext context, UserManager<Entity.User> userManager)
+        public ChangeRoleCase(IAppDbContext context, UserManager<Entity.User> userManager, ICurrentUserProvider currentUserProvider)
         {
             _context = context;
             _userManager = userManager;
+            _currentUserProvider = currentUserProvider;
         }
 
         
         public async Task<IOutput> Handle(ChangeRoleInput request, CancellationToken cancellationToken)
         {
+            var currentUesrId = (await _currentUserProvider.GetCurrentUser()).Id;
             var user = await _userManager.FindByIdAsync(request.UserId.ToString());
-            var newRole = request.NewRole;
-
+            
             if (user is null)
             {
                 return ActionOutput.Error("Пользователя не существует.");
             }
+            
+            if (user.Id == currentUesrId)
+            {
+                return ActionOutput.Error("Нельзя менять себе роль");
+            }
+            
+            var newRole = request.NewRole;
 
             var userRoles = await _userManager.GetRolesAsync(user);
             var addResult = await _userManager.AddToRoleAsync(user, Enum.GetName(newRole));

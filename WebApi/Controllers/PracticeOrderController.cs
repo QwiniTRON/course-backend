@@ -24,6 +24,7 @@ namespace course_backend.Controllers
     {
         private readonly IUseCaseDispatcher _dispatcher;
         private readonly ICurrentUserProvider _currentUserProvider;
+        
 
         public PracticeOrderController(IUseCaseDispatcher dispatcher, ICurrentUserProvider currentUserProvider)
         {
