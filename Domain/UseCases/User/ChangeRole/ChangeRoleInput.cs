@@ -14,7 +14,7 @@ namespace Domain.UseCases.User.ChangeRole
     {
         public ChangeRoleInputValidator()
         {
-            RuleFor(x => x.NewRole).NotEmpty().WithMessage("Роль обязательна");
+            RuleFor(x => x.NewRole).NotNull().WithMessage("Роль обязательна");
             RuleFor(x => x.UserId).NotEmpty().WithMessage("Пользователь обязателен");
         }
     }
