@@ -27,6 +27,7 @@ namespace Domain.UseCases.PracticeOrder.Reject
         {
             var practice = await _context.PracticeOrders
                 .Include(x => x.Lesson)
+                .Include(x => x.Author)
                 .FirstOrDefaultAsync(x => x.Id == request.PracticeId, cancellationToken: cancellationToken);
 
             if (practice is null)
@@ -44,6 +45,8 @@ namespace Domain.UseCases.PracticeOrder.Reject
                 return ActionOutput.Error("Нельзя принять практику у себя");
             }
 
+            var mail = practice.Author.Mail; 
+            
             practice.IsDone = true;
             practice.RejectReason = request.Description;
             practice.IsResolved = false;
@@ -53,7 +56,7 @@ namespace Domain.UseCases.PracticeOrder.Reject
 
             await _context.SaveChangesAsync(cancellationToken);
             
-            _mailClient.SendMail(practice.Author.Mail, message =>
+            _mailClient.SendMail(mail, message =>
             {
                 message.Subject = $"Практический урок {practice.Lesson.Name} не пройден.";
                 message.Body = _templateCreator.GetRejectLetter(practice.Lesson.Name, request.Description);

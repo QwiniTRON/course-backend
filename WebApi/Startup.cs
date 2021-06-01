@@ -70,10 +70,8 @@ namespace course_backend
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
             
-            app.MapWhen(route =>
-            {
-                return route.Request.Path.StartsWithSegments("/swagger") == false;
-            }, builder =>
+            app.MapWhen(route => 
+                !route.Request.Path.StartsWithSegments("/swagger"), builder =>
             {
                 builder.UseStaticFiles(new StaticFileOptions()
                 {

@@ -57,6 +57,31 @@ namespace course_backend.Services
             
             return OperationResult<FileUploaderOutput>.SuccessData(new FileUploaderOutput(path, fileRelatedPath));
         }
+        
+        public async Task<byte[]> GetAsync(string filename)
+        {
+            try {
+                var path = Path.Combine(_appEnvironment.WebRootPath, FileFolderDefault, filename);
+                var bytes = await File.ReadAllBytesAsync(path);
+
+                return bytes;
+            }
+            catch {
+                return new byte[0];
+            }
+        }
+        
+        public FileStream GetFileStream(string filename)
+        {
+            try {
+                var path = Path.Combine(_appEnvironment.WebRootPath, FileFolderDefault, filename);
+                if(File.Exists(path) == false) throw(new NullReferenceException("file isn't found"));
+                return File.OpenRead(path);
+            }
+            catch {
+                throw(new NullReferenceException("file isn't found"));
+            }
+        }
 
         private string GetUniqFileName(string fileName) => DateTime.Now.ToFileTimeUtc().ToString() + "_" + fileName;
         
