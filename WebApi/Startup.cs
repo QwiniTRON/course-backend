@@ -31,6 +31,9 @@ namespace course_backend
             services.BuildFromAssambly(typeof(Startup), Configuration, Env);
             /* build domain */
             services.BuildFromAssambly(typeof(DIExtensions), Configuration, Env);
+            
+            var names = typeof(AppDbInitialize).Assembly.GetManifestResourceNames();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

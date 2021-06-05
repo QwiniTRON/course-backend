@@ -25,4 +25,7 @@
       <Folder Include="Data\Migrations" />
     </ItemGroup>
 
+    <ItemGroup>
+        <EmbeddedResource Include="lessons.json" />
+    </ItemGroup>
 </Project>

@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Domain.Data;
 using Domain.Entity;
 using Domain.Enums;
+using Domain.Maps.Views;
 using Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace Infrastructure.Data
 {
@@ -83,18 +86,19 @@ namespace Infrastructure.Data
                 var reactSubject = new Subject("React.js");
                 context.Add(reactSubject);
                 context.SaveChanges();
-                
-                /* lessons */
-                List<Lesson> lessons = new List<Lesson>()
-                {
-                    new Lesson("Знакомство с библиотекой", false, reactSubject, 1, "Ознакомительный урок 1", "# lesson 1"),
-                    new Lesson("Основные понятия", false, reactSubject, 2, "Ознакомительный урок 2", "# lesson 2"),
-                    new Lesson("Что такое код", false, reactSubject, 3, "Ознакомительный урок 3 ", "# lesson 3"),
-                    new Lesson("Примеры кода", true, reactSubject, 4, "Ознакомительный урок 4", "# lesson 4"),
-                    new Lesson("Компанент", false, reactSubject, 5, "Ознакомительный урок 5", "# lesson 5"),
-                    new Lesson("Подходы к разработке", false, reactSubject, 6, "Ознакомительный урок 6", "# lesson 6")
-                };
-                
+
+                using var stream =
+                    typeof(AppDbInitialize).Assembly.GetManifestResourceStream("Infrastructure.lessons.json");
+
+                using var reader = new StreamReader(stream!);
+
+                var text = reader.ReadToEnd();
+
+                var objs = JsonConvert.DeserializeObject<LessonDetailedView[]>(text);
+
+                var lessons = objs.Select(x =>
+                    new Lesson(x.Name, x.IsPractice, reactSubject, x.Index, x.Description, x.Content));
+
                 context.Lessons.AddRange(lessons);
                 
                 context.SaveChanges();
