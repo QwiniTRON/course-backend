@@ -32,7 +32,9 @@ services:
       - postgres
     volumes:
       - ./logs:/app/logs
-      - ./wwwroot:/app/wwwroot
+      - ./wwwroot/app:/app/wwwroot/app
+      - ./wwwroot/files:/app/wwwroot/files
+      - ./wwwroot/appstatic:/app/wwwroot/appstatic
 
   postgres:
     image: postgres
