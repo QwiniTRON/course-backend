@@ -12,4 +12,5 @@ RUN apt-get update && apt-get install -y --no-install-recommends libgdiplus
 #RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 WORKDIR /app
 COPY --from=build /app/publish .
+COPY ./WebApi/Frontend ./Frontend
 ENTRYPOINT ["dotnet", "WebApi.dll"]
