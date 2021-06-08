@@ -2,7 +2,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /app
 COPY . ./
-RUN dotnet publish WebApp/WebApp.csproj -c Release -o /app/publish
+RUN dotnet publish WebApi/WebApi.csproj -c Release -o /app/publish
 
 # Runtime
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS final
