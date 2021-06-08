@@ -33,7 +33,6 @@ services:
     volumes:
       - ./logs:/app/logs
       - ./wwwroot:/app/wwwroot
-      - ./wwwrootCopied:/app/wwwrootCopied
 
   postgres:
     image: postgres
