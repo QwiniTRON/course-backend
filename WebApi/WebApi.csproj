@@ -34,6 +34,7 @@
     <ItemGroup>
       <Folder Include="Abstractions" />
       <Folder Include="Filters" />
+      <Folder Include="Frontend\client" />
       <Folder Include="wwwroot\appstatic" />
       <Folder Include="wwwroot\files" />
     </ItemGroup>
