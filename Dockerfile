@@ -13,4 +13,5 @@ RUN apt-get update && apt-get install -y --no-install-recommends libgdiplus
 WORKDIR /app
 COPY --from=build /app/publish .
 COPY ./WebApi/Frontend ./Frontend
+COPY /app/wwwroot ./wwwrootCopied
 ENTRYPOINT ["dotnet", "WebApi.dll"]
