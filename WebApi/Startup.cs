@@ -54,13 +54,13 @@ namespace course_backend
             app.UseStaticFiles(new StaticFileOptions()
             {
                 FileProvider = new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\files")),
+                    Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot/files")),
                 RequestPath = new PathString(staticFileRoute)
             });
             app.UseStaticFiles(new StaticFileOptions()
             {
                 FileProvider = new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\appstatic")),
+                    Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot/appstatic")),
                 RequestPath = new PathString(staticAppAssets)
             });
             
