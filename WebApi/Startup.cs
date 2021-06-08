@@ -50,11 +50,7 @@ namespace course_backend
             var staticFileRoute = Configuration.GetSection("Static:StaticFileRoute").Value;
             var staticAppAssets = "/appstatic";
             app.UseDefaultFiles();
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\Frontend")),
-            });
+            app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions()
             {
                 FileProvider = new PhysicalFileProvider(
@@ -80,16 +76,11 @@ namespace course_backend
             app.MapWhen(route => 
                 !route.Request.Path.StartsWithSegments("/swagger"), builder =>
             {
-                builder.UseStaticFiles(new StaticFileOptions()
-                {
-                    FileProvider = new PhysicalFileProvider(
-                        Path.Combine(env.WebRootPath, defaultFileFolder))
-                });
                 builder.UseSpa(config =>
-                {
-                    config.Options.DefaultPage = "/Frontend/index.html";
-                    config.Options.SourcePath = "wwwroot";
-                });
+                    {
+                        config.Options.DefaultPage = "/client/index.html";
+                        config.Options.SourcePath = "Frontend";
+                    });
             });
         }
     }
