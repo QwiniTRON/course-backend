@@ -52,7 +52,7 @@ namespace Domain.UseCases.Account.SignIn
             if (signInResult.Succeeded == false)
             {
                 _logger.LogInformation("User {name} was not found", request.Mail);
-                return ActionOutput.Error("Пользователь не найден"); 
+                return ActionOutput.Error("Данные не верны"); 
             }
             
             _logger.LogInformation($"User {user} signed in");
