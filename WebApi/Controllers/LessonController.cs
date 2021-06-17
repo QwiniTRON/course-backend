@@ -72,7 +72,7 @@ namespace course_backend.Controllers
         
         [HttpPost]
         [AuthorizeByRole(UserRoles.Admin, UserRoles.Teacher)]
-        public async Task<IActionResult> CreateLesson(AddLessonInput request)
+        public async Task<IActionResult> CreateLesson([FromBody]AddLessonInput request)
         {
             return await _dispatcher.DispatchAsync(request);
         } 

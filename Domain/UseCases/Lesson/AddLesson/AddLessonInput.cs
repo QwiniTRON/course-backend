@@ -18,11 +18,11 @@ namespace Domain.UseCases.Lesson.AddLesson
     {
         public AddLessonInputValidator()
         {
-            RuleFor(x => x.Content).NotNull().WithMessage("содержание обязательно");
-            RuleFor(x => x.Description).NotNull().WithMessage("описание обязательно");
-            RuleFor(x => x.Index).NotNull().WithMessage("индекс обязателен");
-            RuleFor(x => x.Name).NotNull().WithMessage("имя обязательно");
-            RuleFor(x => x.IsPractice).NotNull().WithMessage("статус обязателен");
+            // RuleFor(x => x.Content).NotNull().WithMessage("содержание обязательно");
+            // RuleFor(x => x.Description).NotNull().WithMessage("описание обязательно");
+            // RuleFor(x => x.Index).NotNull().WithMessage("индекс обязателен");
+            // RuleFor(x => x.Name).NotNull().WithMessage("имя обязательно");
+            // RuleFor(x => x.IsPractice).NotNull().WithMessage("статус обязателен");
         }
     }
 }
